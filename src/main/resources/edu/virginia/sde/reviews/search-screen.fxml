@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.virginia.sde.reviews.HelloWorldController"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <HBox alignment="TOP_CENTER">
+            <padding>
+                <Insets left="20.0" right="20.0" top="15.0"/>
+            </padding>
+            <children>
+                <TextField text="Course Mnemonic" />
+                <Button mnemonicParsing="false" onAction="#handleButton" text="Search"/>
+                <TextField text="Course Number" />
+                <Button mnemonicParsing="false" onAction="#handleButton" text="Search"/>
+                <TextField text="Course Name" />
+                <Button mnemonicParsing="false" onAction="#handleButton" text="Search"/>
+            </children>
+
+        </HBox>
+    </children>
+</AnchorPane>
