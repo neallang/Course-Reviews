@@ -26,8 +26,8 @@ class DatabaseDriverTest {
     void createTables() throws SQLException{
         databaseDriver.connect();
         databaseDriver.createTables();
-        User user = new User("stan", "password");
-        databaseDriver.addUser(user);
+//        User user = new User("stan", "password");
+//        databaseDriver.addUser(user);
         databaseDriver.commit();
         databaseDriver.disconnect();
 
@@ -38,6 +38,7 @@ class DatabaseDriverTest {
         databaseDriver.connect();
         databaseDriver.clearTables();
         databaseDriver.commit();
+        databaseDriver.disconnect();
     }
 //    @BeforeEach
 //    void setUp() throws SQLException{
