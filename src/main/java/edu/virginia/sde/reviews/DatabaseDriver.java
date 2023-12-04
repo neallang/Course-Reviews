@@ -61,6 +61,7 @@ public class DatabaseDriver {
         }
         createUsersTable();
         createCoursesTable();
+        createReviewsTable();
     }
 
     public void createUsersTable() throws SQLException {
@@ -96,6 +97,27 @@ public class DatabaseDriver {
         preparedStatement.close();
     }
 
+    public void createReviewsTable() throws SQLException{
+        String reviewsTableString;
+        reviewsTableString = """
+                create table if not exists Reviews
+                (
+                    ID        INTEGER not null
+                        primary key autoincrement,
+                    UserID INTEGER    not null,
+                    CourseID  INTEGER    not null,
+                    ReviewText   TEXT    not null,
+                    FOREIGN KEY (UserID) references Users(ID)
+                        on delete cascade,
+                    FOREIGN KEY (CourseID) references Courses(ID)
+                        on delete cascade
+                );
+                """;
+        PreparedStatement preparedStatement = connection.prepareStatement(reviewsTableString);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
+
 
     public void addUser(User user) throws SQLException{
         try {
@@ -119,6 +141,16 @@ public class DatabaseDriver {
         String clearUsersString = "DELETE FROM Users";
         clearUsers.execute(clearUsersString);
         clearUsers.close();
+
+        Statement clearCourses = connection.createStatement();
+        String clearCourseString = "DELETE FROM Courses";
+        clearUsers.execute(clearCourseString);
+        clearCourses.close();
+
+        Statement clearReviews = connection.createStatement();
+        String clearReviewsString = "DELETE FROM Reviews";
+        clearReviews.execute(clearReviewsString);
+        clearReviews.close();
 
 
     }
