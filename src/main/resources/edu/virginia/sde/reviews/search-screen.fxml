@@ -100,6 +100,6 @@
         </columns>
       </TableView>
       <Button layoutX="6.0" layoutY="6.0" mnemonicParsing="false" text="Log Out" />
-      <Button layoutX="525.0" layoutY="6.0" mnemonicParsing="false" text="My Reviews" />
+      <Button layoutX="525.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToReviews" text="My Reviews" />
    </children>
 </AnchorPane>
