@@ -46,5 +46,14 @@ public class CourseReviewsController {
         }
     }
 
+    public void sliderStuff(){
+        rating_slider.setBlockIncrement(1);
+        rating_slider.setMax(5);
+        rating_slider.setShowTickLabels(true);
+        //rating_slider.increment();
+
+
+    }
+
 
 }
