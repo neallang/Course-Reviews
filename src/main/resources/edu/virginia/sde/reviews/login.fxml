@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.HelloWorldController">
+    <children>
+        <VBox layoutX="79.0" layoutY="67.0" prefHeight="200.0" prefWidth="21.0" />
+        <VBox layoutX="192.0" layoutY="120.0" prefHeight="119.0" prefWidth="215.0">
+            <children>
+                <Label text="User Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+      
+                      <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      
+                      <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+      
+                      <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label fx:id="messageLabel" />
+            </children>
+        </VBox>
+      <Label layoutX="165.0" layoutY="51.0" text="Login">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Button layoutX="192.0" layoutY="254.0" mnemonicParsing="false" onAction="#handleButton" text="Register" />
+      <Button layoutX="361.0" layoutY="254.0" mnemonicParsing="false" onAction="#handleButton" text="Login" />
+      <Label layoutX="192.0" layoutY="230.0" text="Not a registered user?" />
+    </children>
+</AnchorPane>
