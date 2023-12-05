@@ -49,7 +49,7 @@ class DatabaseDriverTest {
     @Test
     void getCoursesBy() throws SQLException{
         databaseDriver.connect();
-        ArrayList<Course> query = databaseDriver.getCoursesByDepartment("CourseNumber", "3140");
+        ArrayList<Course> query = databaseDriver.getCoursesByFilter("CourseNumber", "3140");
         Course course = new Course("CS", "3140", "SDE" );
         ArrayList<Course> courses = new ArrayList<>();
         courses.add(course);
@@ -60,6 +60,22 @@ class DatabaseDriverTest {
         System.out.println(courses.get(0).getTitle());
         System.out.println(query.get(0).getTitle());
         //assertEquals(course, query.get(0));
+    }
+
+    @Test
+    void authenticateUser() throws SQLException{
+        databaseDriver.connect();
+        boolean bool = databaseDriver.autheticateUser("stan", "password");
+        databaseDriver.disconnect();
+        assertTrue(bool);
+    }
+
+    @Test
+    void userAlreadyExists() throws SQLException{
+        databaseDriver.connect();
+        boolean bool = databaseDriver.userAlreadyExists("stan");
+        databaseDriver.disconnect();
+        assertTrue(bool);
     }
 
     @Test

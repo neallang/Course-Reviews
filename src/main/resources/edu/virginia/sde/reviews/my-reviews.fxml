@@ -28,8 +28,8 @@
       </HBox>
       <TableView fx:id="myReviews" layoutX="-17.0" layoutY="52.0" prefHeight="348.0" prefWidth="614.0">
         <columns>
-          <TableColumn fx:id="col_subj" prefWidth="76.0" text="Subj" />
-            <TableColumn fx:id="col_id" prefWidth="50.0" text="ID" />
+          <TableColumn fx:id="col_department" prefWidth="76.0" text="Subj" />
+            <TableColumn fx:id="col_courseNum" prefWidth="50.0" text="ID" />
             <TableColumn fx:id="col_rating" prefWidth="61.0" text="Rating" />
             <TableColumn fx:id="col_comment" prefWidth="356.0" text="Comment" />
             <TableColumn fx:id="col_date" prefWidth="70.0" sortType="DESCENDING" text="Date" />
