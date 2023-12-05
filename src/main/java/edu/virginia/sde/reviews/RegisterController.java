@@ -6,21 +6,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class LoginController {
+public class RegisterController {
     DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
 
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
     @FXML
-    private Label messageLabel;
+    private Label blank_label;
 
     @FXML
     private PasswordField password_text_box;
@@ -31,12 +33,9 @@ public class LoginController {
     protected String username;
     protected String password;
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
 
     @FXML
-    void handleLogin(ActionEvent event) throws IOException, SQLException {
+    void handleRegister(ActionEvent event) throws IOException, SQLException {
         // Capture the username and password when the login button is clicked
         username = username_text_box.getText();
         password = password_text_box.getText();
@@ -45,37 +44,27 @@ public class LoginController {
 
         // Now you can perform the login logic, such as validation or authentication
         // For example, you might check if the username and password are valid
-        if (isValidLogin()) {
-            messageLabel.setText("Login successful!");
-            switchToSearch(event);
-
+        if (!ifUserExists()) {
+            databaseDriver.connect();
+            User user = new User(username, password);
+            databaseDriver.addUser(user);
+            databaseDriver.disconnect();
+            switchToLogin(event);
         } else {
-            messageLabel.setText("Invalid username or password.");
+            blank_label.setText("Username is already taken.");
         }
     }
 
-    private boolean isValidLogin() throws SQLException {
+    private boolean ifUserExists() throws SQLException {
         databaseDriver.connect();
-        Boolean isValid = databaseDriver.autheticateUser(username, password);
+        Boolean ifExists= databaseDriver.autheticateUser(username, password);
         databaseDriver.disconnect();
 
-
-        return !username.isEmpty() && !password.isEmpty() && isValid;
+        return ifExists;
     }
 
-    public void switchToSearch(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/search-screen.fxml").toURI().toURL());
-
-        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        scene = new Scene(root);
-        stage.setTitle("Course Search");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void switchToRegister(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/register.fxml").toURI().toURL());
+    public void switchToLogin(javafx.event.ActionEvent actionEvent) throws IOException {
+        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/login.fxml").toURI().toURL());
 
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 

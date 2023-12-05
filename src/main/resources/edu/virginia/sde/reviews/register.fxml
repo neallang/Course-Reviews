@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--<?import com.gluonhq.charm.glisten.control.TextField?>-->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchor_pane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.RegisterController">
+   <children>
+      <Label fx:id="register_label" layoutX="116.0" layoutY="49.0" prefHeight="40.0" prefWidth="79.0" text="Register">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="password_label" layoutX="195.0" layoutY="180.0" prefHeight="40.0" prefWidth="79.0" text="Password:" />
+      <Label fx:id="username_label" layoutX="195.0" layoutY="109.0" prefHeight="40.0" prefWidth="79.0" text="User Name:" />
+      <TextField fx:id="username_text_box" layoutX="195.0" layoutY="149.0" />
+      <Label fx:id="blank_label" layoutX="195.0" layoutY="276.0" />
+      <Button fx:id="register_button" layoutX="293.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleRegister" text="Register" />
+      <Button fx:id="back_to_login" layoutX="195.0" layoutY="298.0" mnemonicParsing="false" onAction="#switchToLogin" text="Back To Login" />
+      <PasswordField fx:id="password_text_box" layoutX="195.0" layoutY="220.0" />
+   </children>
+</AnchorPane>

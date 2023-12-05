@@ -28,7 +28,7 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <Button layoutX="192.0" layoutY="254.0" mnemonicParsing="false" text="Register" />
+      <Button fx:id="register_button" layoutX="192.0" layoutY="254.0" mnemonicParsing="false" onAction="#switchToRegister" text="Register" />
       <Button fx:id="login_button" layoutX="361.0" layoutY="254.0" mnemonicParsing="false" onAction="#handleLogin" text="Login" />
       <Label layoutX="192.0" layoutY="230.0" text="Not a registered user?" />
     </children>
