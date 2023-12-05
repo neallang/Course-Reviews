@@ -48,6 +48,7 @@ public class RegisterController {
             databaseDriver.connect();
             User user = new User(username, password);
             databaseDriver.addUser(user);
+            databaseDriver.commit();
             databaseDriver.disconnect();
             switchToLogin(event);
         } else {
@@ -57,7 +58,7 @@ public class RegisterController {
 
     private boolean ifUserExists() throws SQLException {
         databaseDriver.connect();
-        Boolean ifExists= databaseDriver.autheticateUser(username, password);
+        Boolean ifExists= databaseDriver.userAlreadyExists(username);
         databaseDriver.disconnect();
 
         return ifExists;
