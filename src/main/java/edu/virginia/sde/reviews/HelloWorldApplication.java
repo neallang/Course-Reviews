@@ -17,5 +17,9 @@ public class HelloWorldApplication extends Application {
         stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();
+        DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
+        databaseDriver.connect();
+        databaseDriver.createTables();
+        databaseDriver.disconnect();
     }
 }
