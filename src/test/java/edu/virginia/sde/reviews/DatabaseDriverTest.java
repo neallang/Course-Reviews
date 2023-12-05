@@ -26,11 +26,23 @@ class DatabaseDriverTest {
     void createTables() throws SQLException{
         databaseDriver.connect();
         databaseDriver.createTables();
-//        User user = new User("stan", "password");
-//        databaseDriver.addUser(user);
+
         databaseDriver.commit();
         databaseDriver.disconnect();
 
+    }
+
+    @Test
+    void addData() throws SQLException{
+        databaseDriver.connect();
+        User user = new User("stan", "password");
+        databaseDriver.addUser(user);
+        Course course = new Course("CS", "3140", "SDE" );
+        databaseDriver.addCourse(course);
+        Review review = new Review(1, 1, "I liked this class!", 4);
+        databaseDriver.addReview(review);
+        databaseDriver.commit();
+        databaseDriver.disconnect();
     }
 
     @Test
