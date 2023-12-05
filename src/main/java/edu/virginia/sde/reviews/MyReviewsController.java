@@ -1,5 +1,9 @@
 package edu.virginia.sde.reviews;
 
+import javafx.beans.Observable;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,10 +12,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 
 
 public class MyReviewsController {
@@ -24,10 +32,31 @@ public class MyReviewsController {
     private Parent root;
 
 
-//    public void goBack() {
-//        back_button.setText("You pressed the button!");
-//    }
     @FXML
+    private TableColumn<Review,String> col_comment;
+
+    @FXML
+    private TableColumn<Review, Timestamp> col_date;
+
+    @FXML
+    private TableColumn<?,?> col_courseNum;
+
+    @FXML
+    private TableColumn<Review,Integer> col_rating;
+
+    @FXML
+    private TableColumn<?,?> col_department;
+
+    @FXML
+    private TableView<Review> myReviews;
+
+
+
+
+
+
+
+
     public void switchToSearch(ActionEvent event) throws IOException {
         try {
             root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/search-screen.fxml").toURI().toURL());
