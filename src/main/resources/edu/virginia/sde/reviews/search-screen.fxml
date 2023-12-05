@@ -99,7 +99,7 @@
             <TableColumn prefWidth="70.0" text="Add Course" />
         </columns>
       </TableView>
-      <Button layoutX="6.0" layoutY="6.0" mnemonicParsing="false" text="Log Out" />
-      <Button layoutX="525.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToReviews" text="My Reviews" />
+      <Button layoutX="6.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" />
+      <Button layoutX="525.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToMyReviews" text="My Reviews" />
    </children>
 </AnchorPane>
