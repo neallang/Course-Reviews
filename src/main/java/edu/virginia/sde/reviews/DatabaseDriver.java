@@ -181,6 +181,15 @@ public class DatabaseDriver {
         return resultSet.next();
     }
 
+    public boolean userAlreadyExists(String username) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users where Username = " + "\'" + username + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.next();
+    }
+
     public void addCourse(Course course) throws SQLException{
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Courses(Department, CourseNumber, Title) values (?, ?, ?)");
