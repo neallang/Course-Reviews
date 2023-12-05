@@ -65,6 +65,8 @@
                   <RadioButton fx:id="button_five" mnemonicParsing="false" text="5" toggleGroup="$review_number" GridPane.columnIndex="4" />
                </children>
             </GridPane>
+            <Label fx:id="average_review_label" prefHeight="17.0" prefWidth="100.0" text="Average Review:" GridPane.rowIndex="2" />
+            <Label fx:id="average_review_double" alignment="CENTER_RIGHT" text="Avg" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <HBox alignment="TOP_CENTER" layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="600.0" AnchorPane.topAnchor="14.0">
