@@ -107,6 +107,7 @@ public class DatabaseDriver {
                     CourseID  INTEGER    not null,
                     ReviewText   TEXT    not null,
                     Rating    INTEGER    not null,
+                    ReviewTime  TIMESTAMP    not null,
                     FOREIGN KEY (UserID) references Users(ID)
                         on delete cascade,
                     FOREIGN KEY (CourseID) references Courses(ID)
@@ -247,17 +248,39 @@ public class DatabaseDriver {
 
     public void addReview(Review review) throws SQLException{
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Reviews(UserID, CourseID, ReviewText, Rating) values (?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Reviews(UserID, CourseID, ReviewText, Rating, ReviewTime) values (?, ?, ?, ?, ?)");
             statement.setInt(1, review.getUserID());
             statement.setInt(2, review.getCourseID());
             statement.setString(3, review.getReviewText());
             statement.setInt(4, review.getRating());
+            statement.setTimestamp(5,review.getTimeStamp());
             statement.executeUpdate();
         } catch (SQLException e) {
             rollback(); //rolls back any changes before the Exception was thrown
             throw e; //still throws the SQLException
         }
 
+    }
+
+    public ArrayList<MyReview> getMyReviews(String userID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("select Reviews.ReviewText, Reviews.Rating, Reviews.ReviewTime, Reviews.UserID, Reviews.CourseID, Courses.CourseNumber, Courses.Department from Reviews full join Courses on Reviews.CourseID = Courses.ID where Reviews.UserID = " + userID );
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<MyReview> myReviews = new ArrayList<>();
+        while (resultSet.next()) {
+            var ReviewText = resultSet.getString(1);
+            var Rating = resultSet.getInt(2);
+            var ReviewTime = resultSet.getTimestamp(3);
+            var CourseNumber = resultSet.getString(4);
+            var Department = resultSet.getString(5);
+
+
+            MyReview myReview = new MyReview(ReviewText, Rating, ReviewTime, CourseNumber, Department);
+            myReviews.add(myReview);
+        }
+        return myReviews;
     }
 
 
@@ -293,5 +316,12 @@ public class DatabaseDriver {
         ArrayList<Course> courses = getAllCourses();
         ArrayList<User> users = getAllUsers();
         return courses.isEmpty() || users.isEmpty();
+    }
+
+    public void dropReviewsTable() throws SQLException{
+        Statement dropReviews = connection.createStatement();
+        String dropReviewsString = "DROP TABLE Reviews";
+        dropReviews.execute(dropReviewsString);
+        dropReviews.close();
     }
 }
