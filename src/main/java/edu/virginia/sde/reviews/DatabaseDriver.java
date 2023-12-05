@@ -133,6 +133,46 @@ public class DatabaseDriver {
 
     }
 
+    public ArrayList<User> getAllUsers() throws SQLException {
+        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users");
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<User> users = new ArrayList<>();
+        while (resultSet.next()) {
+            var Username = resultSet.getString(2);
+            var Password = resultSet.getString(3);
+
+
+            User user = new User(Username, Password);
+            users.add(user);
+        }
+        return users;
+
+    }
+
+    public ArrayList<User> getUsersByFilter(String column, String value) throws SQLException {
+        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users where " + column + " = " + "\'" + value + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<User> users = new ArrayList<>();
+        while (resultSet.next()) {
+            var Username = resultSet.getString(2);
+            var Password = resultSet.getString(3);
+
+
+            User user = new User(Username, Password);
+            users.add(user);
+        }
+        return users;
+
+    }
+
     public void addCourse(Course course) throws SQLException{
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Courses(Department, CourseNumber, Title) values (?, ?, ?)");
@@ -147,7 +187,26 @@ public class DatabaseDriver {
 
     }
 
-    public ArrayList<Course> getCoursesByDepartment(String column, String value) throws SQLException {
+    public ArrayList<Course> getAllCourses() throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Courses");
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<Course> courses = new ArrayList<>();
+        while (resultSet.next()) {
+            var Department = resultSet.getString(2);
+            var CourseNumber = resultSet.getString(3);
+            var Title = resultSet.getString(4);
+
+
+            Course course = new Course(Department, CourseNumber, Title);
+            courses.add(course);
+        }
+        return courses;
+    }
+
+    public ArrayList<Course> getCoursesByFilter(String column, String value) throws SQLException {
         //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
@@ -213,6 +272,10 @@ public class DatabaseDriver {
 
     }
 
-
+    public boolean checkEmpty() throws SQLException{
+        ArrayList<Course> courses = getAllCourses();
+        ArrayList<User> users = getAllUsers();
+        return courses.isEmpty() || users.isEmpty();
+    }
 
 }
