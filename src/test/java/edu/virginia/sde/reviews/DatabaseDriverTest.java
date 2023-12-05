@@ -66,6 +66,15 @@ class DatabaseDriverTest {
     void authenticateUser() throws SQLException{
         databaseDriver.connect();
         boolean bool = databaseDriver.autheticateUser("stan", "password");
+        databaseDriver.disconnect();
+        assertTrue(bool);
+    }
+
+    @Test
+    void userAlreadyExists() throws SQLException{
+        databaseDriver.connect();
+        boolean bool = databaseDriver.userAlreadyExists("stan");
+        databaseDriver.disconnect();
         assertTrue(bool);
     }
 
