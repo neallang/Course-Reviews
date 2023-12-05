@@ -49,7 +49,7 @@ class DatabaseDriverTest {
     @Test
     void getCoursesBy() throws SQLException{
         databaseDriver.connect();
-        ArrayList<Course> query = databaseDriver.getCoursesByDepartment("CourseNumber", "3140");
+        ArrayList<Course> query = databaseDriver.getCoursesByFilter("CourseNumber", "3140");
         Course course = new Course("CS", "3140", "SDE" );
         ArrayList<Course> courses = new ArrayList<>();
         courses.add(course);
