@@ -33,22 +33,26 @@ public class MyReviewsController {
 
 
     @FXML
-    private TableColumn<Review,String> col_comment;
+    private TableColumn<?,?> col_comment;
 
     @FXML
-    private TableColumn<Review, Timestamp> col_date;
+    private TableColumn<?,?> col_date;
 
     @FXML
     private TableColumn<?,?> col_courseNum;
 
     @FXML
-    private TableColumn<Review,Integer> col_rating;
+    private TableColumn<?,?> col_rating;
 
     @FXML
     private TableColumn<?,?> col_department;
 
     @FXML
-    private TableView<Review> myReviews;
+    private TableColumn<?, ?> col_courseID;
+
+    @FXML
+    private TableView<?> myReviews;
+
 
 
 

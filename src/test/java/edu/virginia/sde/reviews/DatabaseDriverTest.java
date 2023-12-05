@@ -39,9 +39,12 @@ class DatabaseDriverTest {
         Course course2 = new Course("ANTH", "4300", "New Class");
         databaseDriver.addCourse(course);
         databaseDriver.addCourse(course2);
-        Timestamp timestamp = new Timestamp(2022);
+        Timestamp timestamp = new Timestamp(java.lang.System.currentTimeMillis());
+        System.out.println(timestamp.toString());
         Review review = new Review(1, 1, "I liked this class!", 4, timestamp);
+        Review review2 = new Review(1,2,"Meh", 2, timestamp);
         databaseDriver.addReview(review);
+        databaseDriver.addReview(review2);
         databaseDriver.commit();
         databaseDriver.disconnect();
     }
@@ -73,15 +76,31 @@ class DatabaseDriverTest {
     @Test
     void userAlreadyExists() throws SQLException{
         databaseDriver.connect();
-        boolean bool = databaseDriver.userAlreadyExists("stan");
+        boolean bool = databaseDriver.userAlreadyExists("stan   ");
         databaseDriver.disconnect();
         assertTrue(bool);
+    }
+
+    @Test
+    void getMyReviews() throws SQLException{
+        databaseDriver.connect();
+        ArrayList<MyReview> myReviews = databaseDriver.getMyReviews("1");
+        System.out.println(myReviews);
+        databaseDriver.disconnect();
     }
 
     @Test
     void destroyTables() throws SQLException{
         databaseDriver.connect();
         databaseDriver.clearTables();
+        databaseDriver.commit();
+        databaseDriver.disconnect();
+    }
+
+    @Test
+    void dropReviewsTable() throws  SQLException{
+        databaseDriver.connect();
+        databaseDriver.dropReviewsTable();
         databaseDriver.commit();
         databaseDriver.disconnect();
     }
