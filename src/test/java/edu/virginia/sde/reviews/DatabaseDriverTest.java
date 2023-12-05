@@ -63,6 +63,13 @@ class DatabaseDriverTest {
     }
 
     @Test
+    void authenticateUser() throws SQLException{
+        databaseDriver.connect();
+        boolean bool = databaseDriver.autheticateUser("stan", "password");
+        assertTrue(bool);
+    }
+
+    @Test
     void destroyTables() throws SQLException{
         databaseDriver.connect();
         databaseDriver.clearTables();

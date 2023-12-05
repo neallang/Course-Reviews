@@ -173,6 +173,15 @@ public class DatabaseDriver {
 
     }
 
+    public boolean autheticateUser(String username, String password) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users where Username = " + "\'" + username  + "\'" + " AND " + " Password = " + "\'" + password + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.next();
+    }
+
     public void addCourse(Course course) throws SQLException{
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Courses(Department, CourseNumber, Title) values (?, ?, ?)");
