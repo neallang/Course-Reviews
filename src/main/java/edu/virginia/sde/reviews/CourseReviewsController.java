@@ -46,13 +46,15 @@ public class CourseReviewsController {
         }
     }
 
-    public void sliderStuff(){
-        rating_slider.setBlockIncrement(1);
-        rating_slider.setMax(5);
-        rating_slider.setShowTickLabels(true);
-        //rating_slider.increment();
+    public void switchToLogin(javafx.event.ActionEvent actionEvent) throws IOException {
+        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/login.fxml").toURI().toURL());
 
+        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
+        scene = new Scene(root);
+        stage.setTitle("Log In");
+        stage.setScene(scene);
+        stage.show();
     }
 
 

@@ -33,14 +33,26 @@ public class SearchController {
     }
 
 
-    public void switchToReviews(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
+    public void switchToMyReviews(javafx.event.ActionEvent actionEvent) throws IOException {
+        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/my-reviews.fxml").toURI().toURL());
 
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         scene = new Scene(root);
-        stage.setTitle("Course Reviews");
+        stage.setTitle("My Reviews");
         stage.setScene(scene);
         stage.show();
     }
+
+    public void switchToLogin(javafx.event.ActionEvent actionEvent) throws IOException {
+        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/login.fxml").toURI().toURL());
+
+        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        scene = new Scene(root);
+        stage.setTitle("Log In");
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }
