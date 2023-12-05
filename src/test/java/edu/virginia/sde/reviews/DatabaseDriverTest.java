@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,7 +39,8 @@ class DatabaseDriverTest {
         Course course2 = new Course("ANTH", "4300", "New Class");
         databaseDriver.addCourse(course);
         databaseDriver.addCourse(course2);
-        Review review = new Review(1, 1, "I liked this class!", 4);
+        Timestamp timestamp = new Timestamp(2022);
+        Review review = new Review(1, 1, "I liked this class!", 4, timestamp);
         databaseDriver.addReview(review);
         databaseDriver.commit();
         databaseDriver.disconnect();

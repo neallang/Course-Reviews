@@ -32,5 +32,5 @@ public class Review {
     }
     public int getRating(){return rating;}
     
-    public timeStamp getTimeStamp(){return timeStamp;}
+    public Timestamp getTimeStamp(){return timeStamp;}
 }
