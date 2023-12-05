@@ -9,7 +9,6 @@ public class DatabaseDriver {
     private final String sqliteFilename;
     private Connection connection;
 
-
     public DatabaseDriver (String sqlListDatabaseFilename) {
         this.sqliteFilename = sqlListDatabaseFilename;
     }
@@ -286,5 +285,4 @@ public class DatabaseDriver {
         ArrayList<User> users = getAllUsers();
         return courses.isEmpty() || users.isEmpty();
     }
-
 }
