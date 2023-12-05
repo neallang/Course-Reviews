@@ -14,7 +14,7 @@ public class HelloWorldApplication extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("course-reviews-final.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Course Review");
+        stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();
     }
