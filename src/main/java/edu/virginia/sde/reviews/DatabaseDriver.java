@@ -147,6 +147,28 @@ public class DatabaseDriver {
 
     }
 
+    public ArrayList<Course> getCoursesByDepartment(String column, String value) throws SQLException {
+        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Courses where " + column + " = " + "\'" + value + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<Course> courses = new ArrayList<>();
+        while (resultSet.next()) {
+            var Department = resultSet.getString(2);
+            var CourseNumber = resultSet.getString(3);
+            var Title = resultSet.getString(4);
+
+
+            Course course = new Course(Department, CourseNumber, Title);
+            courses.add(course);
+        }
+            return courses;
+
+    }
+
+
     public void addReview(Review review) throws SQLException{
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Reviews(UserID, CourseID, ReviewText, Rating) values (?, ?, ?, ?)");
