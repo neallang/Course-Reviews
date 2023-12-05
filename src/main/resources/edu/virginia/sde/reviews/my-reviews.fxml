@@ -26,12 +26,13 @@
             <Insets />
          </opaqueInsets>
       </HBox>
-      <TableView layoutY="52.0" prefHeight="349.0" prefWidth="614.0">
+      <TableView fx:id="myReviews" layoutX="-17.0" layoutY="52.0" prefHeight="348.0" prefWidth="614.0">
         <columns>
-          <TableColumn prefWidth="59.0" text="Course" />
-            <TableColumn prefWidth="410.0" text="Comments" />
-            <TableColumn prefWidth="68.0" text="My Rating" />
-            <TableColumn prefWidth="76.0" text="All Reviews" />
+          <TableColumn fx:id="col_department" prefWidth="76.0" text="Subj" />
+            <TableColumn fx:id="col_courseNum" prefWidth="50.0" text="ID" />
+            <TableColumn fx:id="col_rating" prefWidth="61.0" text="Rating" />
+            <TableColumn fx:id="col_comment" prefWidth="356.0" text="Comment" />
+            <TableColumn fx:id="col_date" prefWidth="70.0" sortType="DESCENDING" text="Date" />
         </columns>
       </TableView>
       <Button layoutX="6.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />

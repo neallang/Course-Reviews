@@ -9,7 +9,6 @@ public class DatabaseDriver {
     private final String sqliteFilename;
     private Connection connection;
 
-
     public DatabaseDriver (String sqlListDatabaseFilename) {
         this.sqliteFilename = sqlListDatabaseFilename;
     }
@@ -107,6 +106,7 @@ public class DatabaseDriver {
                     UserID INTEGER    not null,
                     CourseID  INTEGER    not null,
                     ReviewText   TEXT    not null,
+                    Rating    INTEGER    not null,
                     FOREIGN KEY (UserID) references Users(ID)
                         on delete cascade,
                     FOREIGN KEY (CourseID) references Courses(ID)
@@ -132,6 +132,134 @@ public class DatabaseDriver {
 
     }
 
+    public ArrayList<User> getAllUsers() throws SQLException {
+        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users");
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<User> users = new ArrayList<>();
+        while (resultSet.next()) {
+            var Username = resultSet.getString(2);
+            var Password = resultSet.getString(3);
+
+
+            User user = new User(Username, Password);
+            users.add(user);
+        }
+        return users;
+
+    }
+
+    public ArrayList<User> getUsersByFilter(String column, String value) throws SQLException {
+        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users where " + column + " = " + "\'" + value + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<User> users = new ArrayList<>();
+        while (resultSet.next()) {
+            var Username = resultSet.getString(2);
+            var Password = resultSet.getString(3);
+
+
+            User user = new User(Username, Password);
+            users.add(user);
+        }
+        return users;
+
+    }
+
+    public boolean autheticateUser(String username, String password) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users where Username = " + "\'" + username  + "\'" + " AND " + " Password = " + "\'" + password + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.next();
+    }
+
+    public boolean userAlreadyExists(String username) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Users where Username = " + "\'" + username + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.next();
+    }
+
+    public void addCourse(Course course) throws SQLException{
+        try {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Courses(Department, CourseNumber, Title) values (?, ?, ?)");
+            statement.setString(1, course.getDepartment());
+            statement.setString(2, course.getCourseNumber());
+            statement.setString(3, course.getTitle());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            rollback(); //rolls back any changes before the Exception was thrown
+            throw e; //still throws the SQLException
+        }
+
+    }
+
+    public ArrayList<Course> getAllCourses() throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Courses");
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<Course> courses = new ArrayList<>();
+        while (resultSet.next()) {
+            var Department = resultSet.getString(2);
+            var CourseNumber = resultSet.getString(3);
+            var Title = resultSet.getString(4);
+
+
+            Course course = new Course(Department, CourseNumber, Title);
+            courses.add(course);
+        }
+        return courses;
+    }
+
+    public ArrayList<Course> getCoursesByFilter(String column, String value) throws SQLException {
+        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Courses where " + column + " = " + "\'" + value + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<Course> courses = new ArrayList<>();
+        while (resultSet.next()) {
+            var Department = resultSet.getString(2);
+            var CourseNumber = resultSet.getString(3);
+            var Title = resultSet.getString(4);
+
+
+            Course course = new Course(Department, CourseNumber, Title);
+            courses.add(course);
+        }
+            return courses;
+
+    }
+
+
+    public void addReview(Review review) throws SQLException{
+        try {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Reviews(UserID, CourseID, ReviewText, Rating) values (?, ?, ?, ?)");
+            statement.setInt(1, review.getUserID());
+            statement.setInt(2, review.getCourseID());
+            statement.setString(3, review.getReviewText());
+            statement.setInt(4, review.getRating());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            rollback(); //rolls back any changes before the Exception was thrown
+            throw e; //still throws the SQLException
+        }
+
+    }
+
 
 
 
@@ -139,22 +267,31 @@ public class DatabaseDriver {
         //Got help with statements from ChatGPT - Prompt: what is the difference between a statement and a prepared statement in jdbc
         Statement clearUsers = connection.createStatement();
         String clearUsersString = "DELETE FROM Users";
+        String clearUsersSequence = "delete from sqlite_sequence where name='Users'";
         clearUsers.execute(clearUsersString);
+        clearUsers.execute(clearUsersSequence);
         clearUsers.close();
 
         Statement clearCourses = connection.createStatement();
         String clearCourseString = "DELETE FROM Courses";
-        clearUsers.execute(clearCourseString);
+        String clearCoursesSequence = "delete from sqlite_sequence where name='Courses'";
+        clearCourses.execute(clearCourseString);
+        clearCourses.execute(clearCoursesSequence);
         clearCourses.close();
 
         Statement clearReviews = connection.createStatement();
         String clearReviewsString = "DELETE FROM Reviews";
+        String clearReviewsSequence = "delete from sqlite_sequence where name='Reviews'";
         clearReviews.execute(clearReviewsString);
+        clearReviews.execute(clearReviewsSequence);
         clearReviews.close();
 
 
     }
 
-
-
+    public boolean checkEmpty() throws SQLException{
+        ArrayList<Course> courses = getAllCourses();
+        ArrayList<User> users = getAllUsers();
+        return courses.isEmpty() || users.isEmpty();
+    }
 }

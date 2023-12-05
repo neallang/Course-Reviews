@@ -16,6 +16,7 @@ public class Review {
         this.reviewText = reviewText;
         this.rating = rating;
         this.timeStamp = timeStamp;
+
     }
 
     public int getUserID() {
@@ -29,4 +30,7 @@ public class Review {
     public String getReviewText() {
         return reviewText;
     }
+    public int getRating(){return rating;}
+    
+    public Timestamp getTimeStamp(){return timeStamp;}
 }
