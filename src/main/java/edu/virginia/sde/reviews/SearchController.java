@@ -12,6 +12,13 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.sql.*;
+import javafx.collections.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TableView;
+
+
 
 
 public class SearchController {
@@ -20,6 +27,27 @@ public class SearchController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    @FXML
+    private TableColumn<?,?> subjectCol;
+    @FXML
+    private TableColumn<?,?> numCol;
+    @FXML
+    private TableColumn<?,?> titleCol;
+    @FXML
+    private TableColumn<?,?> ratingCol;
+    @FXML
+    private TableColumn<?,?> reviewsCol;
+    @FXML
+    private TableColumn<?,?> addCol;
+    @FXML
+    private TextField subject;
+    @FXML
+    private TextField courseNum;
+    @FXML
+    private TextField courseTitle;
+    @FXML
+    private TableView displayCourses;
+
 
 
     public void handleCourseIDButton() {
@@ -54,5 +82,52 @@ public class SearchController {
         stage.setScene(scene);
         stage.show();
     }
+    /*
+    public void searchCourses(javafx.event.ActionEvent actionEvent) throws IOException {
+        try{
+            Connection con = ;
+            fetchCourses(con);
+            con.close();
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+*/
+
+    private void fetchCourses(Connection con) throws SQLException{
+
+        ObservableList<Course> courses = FXCollections.observableArrayList();
+
+        // Mocking courses (replace this with your actual mock data)
+        Course course1 = new Course("Computer Science", "CS101", "Introduction to Programming");
+        Course course2 = new Course("Mathematics", "MATH202", "Calculus II");
+        Course course3 = new Course("Physics", "PHYS303", "Modern Physics");
+
+        // Adding mock courses to the ObservableList
+        courses.addAll(course1, course2, course3);
+
+        displayCourses.getItems().clear();
+        displayCourses.setItems(courses);
+
+        String query = "SELECT * FROM course WHERE department = ? AND courseNumber = ? LIKE title = ?";
+        String inputDept = subject.getText();
+        String inputNum = courseNum.getText();
+        String inputTitle = courseTitle.getText();
+        try (PreparedStatement findCourses = con.prepareStatement(query)){
+            findCourses.setString(1, inputDept);
+            findCourses.setString(2, inputNum);
+            findCourses.setString(3, "%" + inputTitle + "%");
+            ResultSet rs = findCourses.executeQuery();
+            while(rs.next()){
+                Course matchingCourse = new Course(rs.getString("department"),
+                        rs.getString("courseNum"), rs.getString("title"));
+                courses.add(matchingCourse);
+            }
+
+        }
+        displayCourses.getItems().clear();
+        displayCourses.setItems(courses);
+    }
+
 
 }
