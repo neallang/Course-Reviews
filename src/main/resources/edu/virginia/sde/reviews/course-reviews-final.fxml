@@ -36,7 +36,7 @@
         </rowConstraints>
          <children>
             <Label fx:id="rating_label" text="Rating (Required)" GridPane.halignment="CENTER" />
-            <Slider fx:id="rating_slider" onSwipeRight="#sliderStuff" GridPane.rowIndex="1" />
+            <Slider fx:id="rating_slider" GridPane.rowIndex="1" />
             <Label fx:id="comment_label" text="Comment (Optional)" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
             <TextField fx:id="comment_text_box" prefHeight="66.0" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Button fx:id="save_button" mnemonicParsing="false" text="Save" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
@@ -45,7 +45,7 @@
       </GridPane>
       <HBox alignment="TOP_CENTER" layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="600.0" AnchorPane.topAnchor="14.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="My Reviews">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Course Title">
                <HBox.margin>
                   <Insets top="10.0" />
                </HBox.margin>
