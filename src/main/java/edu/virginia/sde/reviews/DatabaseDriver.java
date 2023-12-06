@@ -89,7 +89,8 @@ public class DatabaseDriver {
                         primary key autoincrement,
                     Department TEXT    not null,
                     CourseNumber  TEXT    not null,
-                    Title   TEXT    not null UNIQUE
+                    Title   TEXT    not null UNIQUE,
+                    AverageCourseRating DOUBLE not null
                 );
                 """;
         PreparedStatement preparedStatement = connection.prepareStatement(coursesTableString);
@@ -204,10 +205,11 @@ public class DatabaseDriver {
 
     public void addCourse(Course course) throws SQLException{
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Courses(Department, CourseNumber, Title) values (?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Courses(Department, CourseNumber, Title, AverageCourseRating) values (?, ?, ?, ?)");
             statement.setString(1, course.getDepartment());
             statement.setString(2, course.getCourseNumber());
             statement.setString(3, course.getTitle());
+            statement.setDouble(4, course.getAverageCourseRating());
             statement.executeUpdate();
         } catch (SQLException e) {
             rollback(); //rolls back any changes before the Exception was thrown
@@ -227,9 +229,10 @@ public class DatabaseDriver {
             var Department = resultSet.getString(2);
             var CourseNumber = resultSet.getString(3);
             var Title = resultSet.getString(4);
+            var AverageCourseRating = resultSet.getDouble(5);
 
 
-            Course course = new Course(Department, CourseNumber, Title);
+            Course course = new Course(Department, CourseNumber, Title, AverageCourseRating);
             courses.add(course);
         }
         return courses;
@@ -247,9 +250,10 @@ public class DatabaseDriver {
             var Department = resultSet.getString(2);
             var CourseNumber = resultSet.getString(3);
             var Title = resultSet.getString(4);
+            var AverageCourseRating = resultSet.getDouble(5);
 
 
-            Course course = new Course(Department, CourseNumber, Title);
+            Course course = new Course(Department, CourseNumber, Title, AverageCourseRating);
             courses.add(course);
         }
             return courses;
@@ -278,6 +282,7 @@ public class DatabaseDriver {
             findCourses += " AND Title LIKE ?";
             searchFor.add("%"+title+"%");
         }
+
 
         PreparedStatement statement = connection.prepareStatement(findCourses);
 
@@ -312,9 +317,37 @@ public class DatabaseDriver {
             statement.setInt(4, review.getRating());
             statement.setTimestamp(5,review.getTimeStamp());
             statement.executeUpdate();
+            updateAverageCourseRating(review.getCourseID());
         } catch (SQLException e) {
             rollback(); //rolls back any changes before the Exception was thrown
             throw e; //still throws the SQLException
+        }
+
+
+    }
+
+    public void deleteReview(int userID, int courseID) throws SQLException{
+        try {
+            double newAverage = getAverageCourseRating(courseID);
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM Reviews where UserID = " + userID + " and CourseID = " + courseID);
+            statement.execute();
+            updateAverageCourseRating(courseID);
+
+        } catch (SQLException e){
+            rollback();
+            throw e;
+        }
+    }
+
+    public void updateAverageCourseRating(int courseID) throws SQLException{
+        try {
+            double newAverage = getAverageCourseRating(courseID);
+            PreparedStatement statement = connection.prepareStatement("UPDATE Courses SET AverageCourseRating = " + newAverage + " WHERE ID = " + courseID);
+            statement.execute();
+
+        } catch (SQLException e){
+            rollback();
+            throw e;
         }
 
     }
@@ -344,11 +377,11 @@ public class DatabaseDriver {
 
 
 
-    public ArrayList<Review> getCourseReviews(String courseID) throws SQLException{
+    public ArrayList<Review> getCourseReviews(int courseID) throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
-        PreparedStatement statement = connection.prepareStatement("select * from Review where CourseID = " + courseID );
+        PreparedStatement statement = connection.prepareStatement("select * from Reviews where CourseID = " + courseID );
         ResultSet resultSet = statement.executeQuery();
         ArrayList<Review> reviews = new ArrayList<>();
         while (resultSet.next()) {
@@ -373,7 +406,16 @@ public class DatabaseDriver {
         return resultSet.getInt(1);
     }
 
-    public double getAverageReview(int courseID) throws SQLException{
+    public Course getCourseByID(int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Courses where ID = " + courseID);
+        ResultSet resultSet = statement.executeQuery();
+        return new Course(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getDouble(5));
+    }
+
+    public double getAverageCourseRating(int courseID) throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
@@ -431,5 +473,19 @@ public class DatabaseDriver {
         String dropReviewsString = "DROP TABLE Reviews";
         dropReviews.execute(dropReviewsString);
         dropReviews.close();
+    }
+
+    public void dropCoursesTable() throws SQLException{
+        Statement dropCourses = connection.createStatement();
+        String dropCoursesString = "DROP TABLE Courses";
+        dropCourses.execute(dropCoursesString);
+        dropCourses.close();
+    }
+
+    public void dropUsersTable() throws SQLException{
+        Statement dropUsers = connection.createStatement();
+        String dropUsersString = "DROP TABLE Users";
+        dropUsers.execute(dropUsersString);
+        dropUsers.close();
     }
 }

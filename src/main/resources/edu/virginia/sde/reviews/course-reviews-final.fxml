@@ -18,11 +18,11 @@
 
 <AnchorPane fx:id="anchor_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.CourseReviewsController">
    <children>
-      <TableView fx:id="review_table" layoutX="1.0" layoutY="45.0" prefHeight="213.0" prefWidth="600.0">
+      <TableView fx:id="tableView" layoutX="1.0" layoutY="45.0" prefHeight="213.0" prefWidth="600.0">
         <columns>
-          <TableColumn fx:id="rating_column" prefWidth="75.0" text="Rating" />
-          <TableColumn fx:id="comment_column" prefWidth="402.0" text="Comment" />
-            <TableColumn fx:id="date_time_column" prefWidth="122.0" text="Date/Time" />
+          <TableColumn fx:id="ratingColumn" prefWidth="75.0" text="Rating" />
+          <TableColumn fx:id="commentColumn" prefWidth="402.0" text="Comment" />
+            <TableColumn fx:id="dateTimeColumn" prefWidth="122.0" text="Date/Time" />
         </columns>
       </TableView>
       <GridPane fx:id="bottom_grid_pane" layoutY="258.0" prefHeight="127.0" prefWidth="600.0">
@@ -39,8 +39,8 @@
          <children>
             <Label fx:id="rating_label" text="Rating (Required)" GridPane.halignment="CENTER" />
             <Label fx:id="comment_label" text="Comment (Optional)" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <TextField fx:id="comment_text_box" prefHeight="66.0" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button fx:id="save_button" mnemonicParsing="false" text="Save" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <TextField fx:id="comment_text_box" onAction="#setComment" prefHeight="66.0" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="save_button" mnemonicParsing="false" onAction="#save" text="Save" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button fx:id="delete_button" mnemonicParsing="false" text="Delete" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <GridPane GridPane.rowIndex="1">
               <columnConstraints>
@@ -54,24 +54,25 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <RadioButton fx:id="button_one" mnemonicParsing="false" text="1">
+                  <RadioButton fx:id="button_one" mnemonicParsing="false" onAction="#setRatingNumber" text="1">
                      <toggleGroup>
                         <ToggleGroup fx:id="review_number" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="button_two" mnemonicParsing="false" text="2" toggleGroup="$review_number" GridPane.columnIndex="1" />
-                  <RadioButton fx:id="button_three" mnemonicParsing="false" text="3" toggleGroup="$review_number" GridPane.columnIndex="2" />
-                  <RadioButton fx:id="button_four" mnemonicParsing="false" text="4" toggleGroup="$review_number" GridPane.columnIndex="3" />
-                  <RadioButton fx:id="button_five" mnemonicParsing="false" text="5" toggleGroup="$review_number" GridPane.columnIndex="4" />
+                  <RadioButton fx:id="button_two" mnemonicParsing="false" onAction="#setRatingNumber" text="2" toggleGroup="$review_number" GridPane.columnIndex="1" />
+                  <RadioButton fx:id="button_three" mnemonicParsing="false" onAction="#setRatingNumber" text="3" toggleGroup="$review_number" GridPane.columnIndex="2" />
+                  <RadioButton fx:id="button_four" mnemonicParsing="false" onAction="#setRatingNumber" text="4" toggleGroup="$review_number" GridPane.columnIndex="3" />
+                  <RadioButton fx:id="button_five" mnemonicParsing="false" onAction="#setRatingNumber" text="5" toggleGroup="$review_number" GridPane.columnIndex="4" />
                </children>
             </GridPane>
             <Label fx:id="average_review_label" prefHeight="17.0" prefWidth="100.0" text="Average Review:" GridPane.rowIndex="2" />
             <Label fx:id="average_review_double" alignment="CENTER_RIGHT" text="Avg" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label fx:id="null_rating_label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <HBox alignment="TOP_CENTER" layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="600.0" AnchorPane.topAnchor="14.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Course Title">
+            <Text fx:id="course_title_label" strokeType="OUTSIDE" strokeWidth="0.0" text="Course Title">
                <HBox.margin>
                   <Insets top="10.0" />
                </HBox.margin>
@@ -84,7 +85,7 @@
             <Insets />
          </opaqueInsets>
       </HBox>
-      <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+       <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
       <Button layoutX="546.0" layoutY="-7.0" mnemonicParsing="false" onAction="#switchToSearch" text="Course Search" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
    </children>
 </AnchorPane>
