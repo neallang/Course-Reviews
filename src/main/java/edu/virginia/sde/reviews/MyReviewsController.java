@@ -116,6 +116,7 @@ public class MyReviewsController {
         col_date.setCellValueFactory(new PropertyValueFactory<MyReview, Timestamp>("timestamp"));
         col_courseID.setCellValueFactory(new PropertyValueFactory<MyReview, Integer>("courseID"));
 
+
         myReviews.setItems(observableReviews);
     }
 
