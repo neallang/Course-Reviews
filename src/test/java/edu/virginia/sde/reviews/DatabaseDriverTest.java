@@ -84,7 +84,7 @@ class DatabaseDriverTest {
     @Test
     void getMyReviews() throws SQLException{
         databaseDriver.connect();
-        ArrayList<MyReview> myReviews = databaseDriver.getMyReviews("1");
+        ArrayList<MyReview> myReviews = databaseDriver.getMyReviews(1);
         System.out.println(myReviews);
         databaseDriver.disconnect();
     }
