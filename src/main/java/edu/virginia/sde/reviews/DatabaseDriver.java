@@ -297,26 +297,24 @@ public class DatabaseDriver {
 
 
 
-    public ArrayList<MyReview> getCourseReviews(String courseID) throws SQLException{
+    public ArrayList<Review> getCourseReviews(String courseID) throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
-        PreparedStatement statement = connection.prepareStatement("select Reviews.ReviewText, Reviews.Rating, Reviews.ReviewTime, Reviews.UserID, Reviews.CourseID, Courses.CourseNumber, Courses.Department, Courses.ID from Reviews full join Courses on Reviews.CourseID = Courses.ID where Reviews.CourseID = " + courseID );
+        PreparedStatement statement = connection.prepareStatement("select * from Review where CourseID = " + courseID );
         ResultSet resultSet = statement.executeQuery();
-        ArrayList<MyReview> myReviews = new ArrayList<>();
+        ArrayList<Review> reviews = new ArrayList<>();
         while (resultSet.next()) {
-            var ReviewText = resultSet.getString(1);
-            var Rating = resultSet.getInt(2);
-            var ReviewTime = resultSet.getTimestamp(3);
-            var CourseNumber = resultSet.getString(4);
-            var Department = resultSet.getString(5);
-            var CourseID = resultSet.getInt(6);
+            var UserID = resultSet.getInt(2);
+            var CourseID = resultSet.getInt(3);
+            var ReviewText = resultSet.getString(4);
+            var Rating = resultSet.getInt(5);
+            var ReviewTime = resultSet.getTimestamp(6);
 
-
-            MyReview myReview = new MyReview(ReviewText, Rating, ReviewTime, CourseNumber, Department, CourseID);
-            myReviews.add(myReview);
+            Review review = new Review(UserID, CourseID, ReviewText, Rating, ReviewTime);
+            reviews.add(review);
         }
-        return myReviews;
+        return reviews;
     }
 
     public int getCourseID(String title) throws SQLException{
