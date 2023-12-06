@@ -261,40 +261,6 @@ public class DatabaseDriver {
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
-
-//        PreparedStatement statement;
-//        if(department.isEmpty() && courseNumber.isEmpty() && title.isEmpty()){
-//            return new ArrayList<Course>();
-//        }  else if (department.isEmpty() && courseNumber.isEmpty()){
-//            statement = connection.prepareStatement("SELECT * FROM Courses where Title LIKE " +  "\'%" + title + "%\'");
-//        } else if (department.isEmpty() && title.isEmpty()) {
-//            statement = connection.prepareStatement("SELECT * FROM Courses where CourseNumber = " + "\'" + courseNumber + "\'");
-//        } else if (courseNumber.isEmpty() && title.isEmpty()){
-//            statement = connection.prepareStatement("SELECT * FROM Courses where Department = " + "\'" + department + "\'");
-//        } else if(department.isEmpty()){
-//            statement = connection.prepareStatement("SELECT * FROM Courses where CourseNumber = " + "\'" + courseNumber + "\'" + " and Title LIKE " +  "\'%" + title + "%\'");
-//        } else if(courseNumber.isEmpty()){
-//            statement = connection.prepareStatement("SELECT * FROM Courses where Department = " + "\'" + department + "\'" + " and Title LIKE " +  "\'%" + title + "%\'");
-//        } else if (title.isEmpty()){
-//            statement = connection.prepareStatement("SELECT * FROM Courses where Department = " + "\'" + department + "\'" + " and CourseNumber = " + "\'" + courseNumber + "\'");
-//        } else {
-//            statement = connection.prepareStatement("SELECT * FROM Courses where Department = " + "\'" + department + "\'" + " and CourseNumber = " + "\'" + courseNumber + "\'" + " and Title LIKE " + "\'%" + title + "%\'");
-//        }
-//        statement.setString(1, department);
-//        statement.setString(2, courseNumber);
-//        statement.setString(3, title);
-//
-//        ResultSet resultSet = statement.executeQuery();
-//        ArrayList<Course> courses = new ArrayList<>();
-//        while (resultSet.next()) {
-//            var Department = resultSet.getString(2);
-//            var CourseNumber = resultSet.getString(3);
-//            var Title = resultSet.getString(4);
-//
-//
-//            Course course = new Course(Department, CourseNumber, Title);
-//            courses.add(course);
-//        }
         System.out.println(department);
         String findCourses = "SELECT * FROM Courses WHERE 1=1";
         ArrayList<String> searchFor = new ArrayList<>();
