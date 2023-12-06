@@ -49,19 +49,25 @@ public class SearchController {
     @FXML
     private TableColumn<Course,String> titleCol;
     @FXML
-    private TableColumn<?,?> ratingCol;
+    private TableColumn<Course,Double> ratingCol;
     @FXML
-    private TableColumn<Button,Void> reviewsCol;
+    private TextField subjectSearch;
     @FXML
-    private TableColumn<?,Button> addCol;
+    private TextField courseNumSearch;
     @FXML
-    private TextField subject;
+    private TextField courseTitleSearch;
     @FXML
-    private TextField courseNum;
+    private TextField subjectAdd;
     @FXML
-    private TextField courseTitle;
+    private TextField courseNumAdd;
+    @FXML
+    private TextField courseTitleAdd;
     @FXML
     private TableView<Course> displayCourses;
+    @FXML
+    private Button searchButton;
+    @FXML
+    private Button addButton;
 
     //MyReviewsController myReviewsController = new MyReviewsController();
 
@@ -88,17 +94,6 @@ public class SearchController {
 
     }
 
-    public void switchToCourseReview(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
-
-        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        scene = new Scene(root);
-        stage.setTitle("Course");
-        stage.setScene(scene);
-        stage.show();
-    }
-
     public void switchToLogin(javafx.event.ActionEvent actionEvent) throws IOException {
         root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/login.fxml").toURI().toURL());
 
@@ -114,12 +109,18 @@ public class SearchController {
     public void initialize() throws IOException, SQLException{
         databaseDriver.connect();
         ArrayList<Course> courseArrayList = databaseDriver.getAllCourses();
-        databaseDriver.disconnect();
-
         ObservableList<Course> observableCourses = FXCollections.observableArrayList(courseArrayList);
         numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
+//        ArrayList<Double> reviews = new ArrayList<>();
+//        for(Course course: courseArrayList){
+//            int id = databaseDriver.getCourseID(course.getTitle());
+//            double avg = databaseDriver.getAverageReview(id);
+//            reviews.add(avg);
+//        }
+//        ObservableList<Double> observableCourseRatings = FXCollections.observableArrayList(reviews);
+//        ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>());
 
         displayCourses.setItems(observableCourses);
         displayCourses.setRowFactory(tv -> {
@@ -151,7 +152,30 @@ public class SearchController {
         });
         databaseDriver.disconnect();
     }
+    public void searchCourses(javafx.event.ActionEvent actionEvent) throws IOException, SQLException{
+        String inputDept = subjectSearch.getText();
+        String inputNum = courseNumSearch.getText();
+        String inputTitle = courseTitleSearch.getText();
+        databaseDriver.connect();
+        ArrayList<Course> searchedCourses = new ArrayList<>(databaseDriver.getCoursesBySearch(inputDept,inputNum,inputTitle));
+        databaseDriver.disconnect();
 
+        ObservableList<Course> observableCourses = FXCollections.observableArrayList(searchedCourses);
+        numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
+        subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
+
+
+        displayCourses.setItems(observableCourses);
+    }
+
+    public void addCourseInSearch(javafx.event.ActionEvent actionEvent) throws IOException, SQLException {
+        String inputDept = subjectAdd.getText();
+        String inputNum = courseNumAdd.getText();
+        String inputTitle = courseTitleAdd.getText();
+        Course newCourse = new Course(inputDept, inputNum, inputTitle);
+        databaseDriver.addCourse(newCourse);
+    }
 
 }
 

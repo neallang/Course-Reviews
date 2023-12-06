@@ -52,17 +52,17 @@
                   <Font size="12.0" />
                </font>
             </Text>
-            <TextField GridPane.columnIndex="1">
+            <TextField fx:id="subjectSearch" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </TextField>
-            <TextField GridPane.columnIndex="3">
+            <TextField fx:id="courseNumSearch" GridPane.columnIndex="3">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </TextField>
-            <TextField GridPane.columnIndex="5">
+            <TextField fx:id="courseTitleSearch" GridPane.columnIndex="5">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -83,7 +83,7 @@
                   <Insets right="5.0" />
                </GridPane.margin>
             </Text>
-            <Button mnemonicParsing="false" text="Search" GridPane.columnIndex="6">
+            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchCourses" text="Search" GridPane.columnIndex="6">
                <GridPane.margin>
                   <Insets left="5.0" />
                </GridPane.margin>
@@ -100,5 +100,24 @@
       </TableView>
       <Button layoutX="6.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" />
       <Button layoutX="525.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToMyReviews" text="My Reviews" />
+      <GridPane layoutX="20.0" layoutY="362.0" prefHeight="30.0" prefWidth="575.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="112.0" minWidth="10.0" prefWidth="91.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="55.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="60.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="258.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="96.0" minWidth="10.0" prefWidth="94.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="subjectAdd" prefHeight="26.0" prefWidth="72.0" promptText="Subject" GridPane.columnIndex="1" />
+            <TextField fx:id="courseNumAdd" prefHeight="26.0" prefWidth="64.0" promptText="Number" GridPane.columnIndex="2" />
+            <TextField fx:id="courseTitleAdd" promptText="Title" GridPane.columnIndex="3" />
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#addCourseInSearch" prefHeight="26.0" prefWidth="84.0" text="Add Course" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add New Course:" wrappingWidth="100.20849609375" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>
