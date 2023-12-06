@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 
@@ -53,9 +54,10 @@ public class MyReviewsController {
     @FXML
     private TableView<?> myReviews;
 
-
-
-
+    DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
+    LoginController loginController = new LoginController();
+    String username = loginController.getUsername();
+    String password = loginController.getPassword();
 
 
 
@@ -87,5 +89,8 @@ public class MyReviewsController {
         stage.show();
     }
 
-
+    public void populateTable() throws SQLException {
+        databaseDriver.connect();
+        databaseDriver.getMyReviews(username);
+    }
 }

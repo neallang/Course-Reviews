@@ -28,8 +28,17 @@ public class LoginController {
     @FXML
     private TextField username_text_box;
 
-    protected String username;
-    protected String password;
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    private String password;
 
     private Stage stage;
     private Scene scene;
@@ -84,4 +93,6 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
+
+
 }
