@@ -90,6 +90,18 @@ class DatabaseDriverTest {
     }
 
     @Test
+    void getCourseReviews() throws SQLException{
+
+    }
+
+    @Test
+    void getUserID() throws SQLException{
+        databaseDriver.connect();
+        int ID = databaseDriver.getUserID("stan");
+        assertEquals(1, ID);
+    }
+
+    @Test
     void destroyTables() throws SQLException{
         databaseDriver.connect();
         databaseDriver.clearTables();
