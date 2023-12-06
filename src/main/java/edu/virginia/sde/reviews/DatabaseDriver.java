@@ -468,8 +468,15 @@ public class DatabaseDriver {
 
     public void dropCoursesTable() throws SQLException{
         Statement dropCourses = connection.createStatement();
-        String dropCoursesString = "DROP TABLE COURSES";
+        String dropCoursesString = "DROP TABLE Courses";
         dropCourses.execute(dropCoursesString);
         dropCourses.close();
+    }
+
+    public void dropUsersTable() throws SQLException{
+        Statement dropUsers = connection.createStatement();
+        String dropUsersString = "DROP TABLE Users";
+        dropUsers.execute(dropUsersString);
+        dropUsers.close();
     }
 }
