@@ -102,17 +102,6 @@ public class MyReviewsController {
         stage.show();
     }
 
-    public void switchToCourseReviews(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
-
-        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        scene = new Scene(root);
-        stage.setTitle("Course Reviews");
-        stage.setScene(scene);
-        stage.show();
-    }
-
     UsernameSingleton currentUsername = UsernameSingleton.getInstance();
     CourseIDSingleton currentCourseID = CourseIDSingleton.getInstance();
     public void initialize() throws IOException, SQLException{
