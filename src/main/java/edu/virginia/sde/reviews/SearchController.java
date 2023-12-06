@@ -8,7 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.When;
 import java.io.File;
 import java.io.IOException;
 
@@ -68,9 +69,6 @@ public class SearchController {
     private Button searchButton;
     @FXML
     private Button addButton;
-
-    //MyReviewsController myReviewsController = new MyReviewsController();
-
 
     private User activeUser;
     public void setActiveUser(User user){
@@ -160,7 +158,6 @@ public class SearchController {
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>("averageCourseRating"));
 
-
         displayCourses.setItems(observableCourses);
     }
 
@@ -169,7 +166,11 @@ public class SearchController {
         String inputNum = courseNumAdd.getText();
         String inputTitle = courseTitleAdd.getText();
         Course newCourse = new Course(inputDept, inputNum, inputTitle);
+        databaseDriver.connect();
         databaseDriver.addCourse(newCourse);
+        databaseDriver.commit();
+        databaseDriver.disconnect();
+        initialize();
     }
 
 }
