@@ -112,8 +112,20 @@ public class SearchController {
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>("averageCourseRating"));
+        ratingCol.setCellFactory(ratings -> new TableCell<Course, Double>(){
+            //reference for setting the ratings column:
+            //https://stackoverflow.com/questions/46671643/javafx-tableview-displays-null-values
+            @Override
+            protected void updateItem(Double item, boolean empty){
+                super.updateItem(item, empty);
+                if(item == null || empty || item == 0.0){
+                    setText(null);
+                }else{
+                    setText(String.format("%.2f", item));
+                }
+            }
 
-
+        });
         displayCourses.setItems(observableCourses);
         displayCourses.setRowFactory(tv -> {
             TableRow<Course> row = new TableRow<>();
