@@ -11,10 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -117,6 +114,20 @@ public class MyReviewsController {
         col_courseID.setCellValueFactory(new PropertyValueFactory<MyReview, Integer>("courseID"));
 
         myReviews.setItems(observableReviews);
+
+        myReviews.setRowFactory(tv -> {
+            TableRow<MyReview> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 1 && (!row.isEmpty())) {
+                    MyReview rowData = row.getItem();
+                    int courseID = rowData.getCourseID(); // Assuming there's a method to get courseID
+                    System.out.println("Clicked on CourseID: " + courseID);
+                    // Perform actions based on the clicked courseID or rowData
+                }
+            });
+            return row;
+        });
     }
+
 
 }
