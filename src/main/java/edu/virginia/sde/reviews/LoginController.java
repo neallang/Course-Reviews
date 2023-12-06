@@ -30,6 +30,15 @@ public class LoginController {
 
     private String username;
 
+
+    private String password;
+
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+    private User activeUser;
+
+
     public String getUsername() {
         return username;
     }
@@ -37,12 +46,12 @@ public class LoginController {
     public String getPassword() {
         return password;
     }
-
-    private String password;
-
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    public void setActiveUser(User user){
+        this.activeUser = user;
+    }
+    public User getActiveUser(){
+        return  activeUser;
+    }
 
     @FXML
     void handleLogin(ActionEvent event) throws IOException, SQLException {
@@ -50,6 +59,7 @@ public class LoginController {
         username = username_text_box.getText();
         password = password_text_box.getText();
 
+        setActiveUser(new User(username, password));
 
 
         // Now you can perform the login logic, such as validation or authentication
@@ -76,6 +86,12 @@ public class LoginController {
         root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/search-screen.fxml").toURI().toURL());
 
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        SearchController searchController = new SearchController();
+        searchController.setActiveUser(getActiveUser());
+
+        MyReviewsController myReviewsController = new MyReviewsController();
+        myReviewsController.setActiveUser(getActiveUser());
 
         scene = new Scene(root);
         stage.setTitle("Course Search");
