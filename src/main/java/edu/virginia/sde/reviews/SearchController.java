@@ -21,7 +21,6 @@ public class SearchController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    //MyReviewsController myReviewsController = new MyReviewsController();
 
 
     private User activeUser;
