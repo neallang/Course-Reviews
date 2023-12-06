@@ -90,14 +90,12 @@
             </Button>
          </children>
       </GridPane>
-      <TableView fx:id="displayCourses" layoutY="83.0" prefHeight="317.0" prefWidth="614.0">
+      <TableView fx:id="displayCourses" layoutY="83.0" prefHeight="272.0" prefWidth="614.0">
         <columns>
           <TableColumn fx:id="subjectCol" prefWidth="59.0" text="Subject" />
           <TableColumn fx:id="numCol" prefWidth="75.0" text="Number" />
-            <TableColumn fx:id="titleCol" prefWidth="314.0" text="Title" />
-            <TableColumn prefWidth="55.0" text="Rating" />
-            <TableColumn fx:id="reviewsCol" prefWidth="61.0" text="Reviews" />
-            <TableColumn fx:id="addCol" prefWidth="49.0" text="Add" />
+            <TableColumn fx:id="titleCol" prefWidth="407.0" text="Title" />
+            <TableColumn prefWidth="72.0" text="Rating" />
         </columns>
       </TableView>
       <Button layoutX="6.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" />
