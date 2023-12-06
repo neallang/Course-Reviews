@@ -49,7 +49,9 @@ public class SearchController {
 
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-//        MyReviewsController myReviewsController = new MyReviewsController();
+        MyReviewsController myReviewsController = new MyReviewsController();
+        //System.out.println(myReviewsController.getActiveUser().getUsername());
+
 //        myReviewsController.populateTable();
 
         scene = new Scene(root);

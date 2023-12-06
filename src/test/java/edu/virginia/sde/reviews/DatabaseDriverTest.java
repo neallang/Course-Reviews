@@ -97,8 +97,8 @@ class DatabaseDriverTest {
     @Test
     void getUserID() throws SQLException{
         databaseDriver.connect();
-        int ID = databaseDriver.getUserID("stan");
-        assertEquals(1, ID);
+        int ID = databaseDriver.getUserID("Neal");
+        assertEquals(2, ID);
     }
 
     @Test
