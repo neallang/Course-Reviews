@@ -31,6 +31,17 @@ public class SearchController {
     private Scene scene;
     private Parent root;
 
+    public int getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(int courseID) {
+        this.courseID = courseID;
+    }
+
+    private int courseID;
+
+
     @FXML
     private TableColumn<Course,String> subjectCol;
     @FXML
@@ -98,17 +109,46 @@ public class SearchController {
         stage.setScene(scene);
         stage.show();
     }
+    CourseIDSingleton currentCourseID = CourseIDSingleton.getInstance();
 
     public void initialize() throws IOException, SQLException{
         databaseDriver.connect();
         ArrayList<Course> courseArrayList = databaseDriver.getAllCourses();
-        databaseDriver.disconnect();
+
         ObservableList<Course> observableCourses = FXCollections.observableArrayList(courseArrayList);
         numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
 
         displayCourses.setItems(observableCourses);
+        displayCourses.setRowFactory(tv -> {
+            TableRow<Course> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 1 && (!row.isEmpty())) {
+                    Course rowData = row.getItem();
+                    try {
+                        databaseDriver.connect();
+                        setCourseID(databaseDriver.getCourseID(rowData.getTitle()));
+                        currentCourseID.setCourseID(courseID);
+                        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
+                        // Switch to the new scene
+                        Stage stage = (Stage) displayCourses.getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    // Perform actions based on the clicked courseID or rowData
+                }
+            });
+            return row;
+        });
+        databaseDriver.disconnect();
     }
 
 
