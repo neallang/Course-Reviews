@@ -173,6 +173,16 @@ public class DatabaseDriver {
 
     }
 
+    public int getUserID(String username) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT ID FROM Users where Username = " + "\'" + username + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.getInt(1);
+    }
+
+
     public boolean autheticateUser(String username, String password) throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
@@ -267,6 +277,27 @@ public class DatabaseDriver {
             throw new IllegalStateException("Connection is not open");
         }
         PreparedStatement statement = connection.prepareStatement("select Reviews.ReviewText, Reviews.Rating, Reviews.ReviewTime, Reviews.UserID, Reviews.CourseID, Courses.CourseNumber, Courses.Department from Reviews full join Courses on Reviews.CourseID = Courses.ID where Reviews.UserID = " + userID );
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<MyReview> myReviews = new ArrayList<>();
+        while (resultSet.next()) {
+            var ReviewText = resultSet.getString(1);
+            var Rating = resultSet.getInt(2);
+            var ReviewTime = resultSet.getTimestamp(3);
+            var CourseNumber = resultSet.getString(4);
+            var Department = resultSet.getString(5);
+
+
+            MyReview myReview = new MyReview(ReviewText, Rating, ReviewTime, CourseNumber, Department);
+            myReviews.add(myReview);
+        }
+        return myReviews;
+    }
+
+    public ArrayList<MyReview> getCourseReviews(String courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("select Reviews.ReviewText, Reviews.Rating, Reviews.ReviewTime, Reviews.UserID, Reviews.CourseID, Courses.CourseNumber, Courses.Department from Reviews full join Courses on Reviews.CourseID = Courses.ID where Reviews.CourseID = " + courseID );
         ResultSet resultSet = statement.executeQuery();
         ArrayList<MyReview> myReviews = new ArrayList<>();
         while (resultSet.next()) {
