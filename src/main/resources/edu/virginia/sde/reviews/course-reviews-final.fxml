@@ -71,7 +71,7 @@
       </GridPane>
       <HBox alignment="TOP_CENTER" layoutX="1.0" layoutY="14.0" prefHeight="38.0" prefWidth="600.0" AnchorPane.topAnchor="14.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Course Title">
+            <Text fx:id="course_title_label" strokeType="OUTSIDE" strokeWidth="0.0" text="Course Title">
                <HBox.margin>
                   <Insets top="10.0" />
                </HBox.margin>
@@ -84,7 +84,7 @@
             <Insets />
          </opaqueInsets>
       </HBox>
-      <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+       <Button layoutX="14.0" layoutY="2.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
       <Button layoutX="546.0" layoutY="-7.0" mnemonicParsing="false" onAction="#switchToSearch" text="Course Search" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
    </children>
 </AnchorPane>

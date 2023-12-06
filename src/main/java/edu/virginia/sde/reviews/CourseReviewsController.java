@@ -11,11 +11,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 
@@ -80,42 +83,17 @@ public class CourseReviewsController {
         stage.show();
     }
 
-
-
-    //plan of action:
-    //load in other reviews of this course
-            //find this via the course ID
-
-    //check if the current user has submitted a review
-    //if they have, don't let them enter information unless they DELETE
-    //if they haven't, be able to enter information and SAVE - once saved, update table
-
-
-    //configure the table - has a foreign key that links to ID of course
-
-    //stanley makes a method to return all reviews for a given course
     @FXML private TableView<Review> tableView;
     @FXML private TableColumn<Review, Integer> ratingColumn;    //rating
     @FXML private TableColumn<Review, String> commentColumn;      //reviewText
     @FXML private TableColumn<Review, Timestamp> dateTimeColumn;     //timeStamp
+    @FXML private Label course_title_label;
 
-    public void tableStuff(){
-        //setting up columns
-        ratingColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("rating"));
-        commentColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("comment"));
-        dateTimeColumn.setCellValueFactory(new PropertyValueFactory<Review, Timestamp>("timestamp"));
+    CourseIDSingleton currentCourseID = CourseIDSingleton.getInstance();
+    public void initialize() throws IOException, SQLException {
+        course_title_label.setText(currentCourseID.toString());
 
-        //loading data
-        tableView.setItems(getReviews());
 
-    }
-    public ObservableList<Review> getReviews(){ //unmade method - stanley will write this
-        Timestamp mockTimestamp = new Timestamp(1,2,3,4,5,6,7);
-
-        ObservableList<Review> reviews = FXCollections.observableArrayList();
-        reviews.add(new Review(1, 2, "i hate this class", 4, mockTimestamp));
-
-        return reviews;
 
     }
 
