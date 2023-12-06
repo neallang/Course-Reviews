@@ -364,6 +364,15 @@ public class DatabaseDriver {
         return resultSet.getInt(1);
     }
 
+    public Course getCourseByID(int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Courses where ID = " + courseID);
+        ResultSet resultSet = statement.executeQuery();
+        return new Course(resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
+    }
+
     public double getAverageReview(int courseID) throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
