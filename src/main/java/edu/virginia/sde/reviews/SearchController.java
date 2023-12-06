@@ -64,6 +64,10 @@ public class SearchController {
     private TextField courseTitleAdd;
     @FXML
     private TableView<Course> displayCourses;
+    @FXML
+    private Button searchButton;
+    @FXML
+    private Button addButton;
 
     //MyReviewsController myReviewsController = new MyReviewsController();
 
@@ -88,17 +92,6 @@ public class SearchController {
 
         stage.show();
 
-    }
-
-    public void switchToCourseReview(javafx.event.ActionEvent actionEvent) throws IOException {
-        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
-
-        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        scene = new Scene(root);
-        stage.setTitle("Course");
-        stage.setScene(scene);
-        stage.show();
     }
 
     public void switchToLogin(javafx.event.ActionEvent actionEvent) throws IOException {
@@ -159,6 +152,22 @@ public class SearchController {
         });
         databaseDriver.disconnect();
     }
+    public void searchCourses(javafx.event.ActionEvent actionEvent) throws IOException, SQLException{
+        String inputDept = subjectSearch.getText();
+        String inputNum = courseNumSearch.getText();
+        String inputTitle = courseTitleSearch.getText();
+        databaseDriver.connect();
+        ArrayList<Course> searchedCourses = new ArrayList<>(databaseDriver.getCoursesBySearch(inputDept,inputNum,inputTitle));
+        databaseDriver.disconnect();
+        System.out.println(searchedCourses);
+        ObservableList<Course> observableCourses = FXCollections.observableArrayList(searchedCourses);
+        numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
+        subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
+
+        displayCourses.setItems(observableCourses);
+    }
+
     public void addCourseInSearch(javafx.event.ActionEvent actionEvent) throws IOException, SQLException {
         String inputDept = subjectAdd.getText();
         String inputNum = courseNumAdd.getText();
