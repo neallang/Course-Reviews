@@ -97,8 +97,10 @@ public class MyReviewsController {
         stage.show();
     }
 
+    UsernameSingleton currentUsername = UsernameSingleton.getInstance();
     public void initialize() throws IOException, SQLException{
-        String username = activeUser.getUsername();
+
+        String username = currentUsername.getUsername();
 
         databaseDriver.connect();
         int userID = databaseDriver.getUserID(username);
@@ -107,17 +109,23 @@ public class MyReviewsController {
         ArrayList<MyReview> myReviewList = databaseDriver.getMyReviews(userID);
         databaseDriver.disconnect();
         ObservableList<MyReview> observableReviews = FXCollections.observableArrayList(myReviewList);
+        for (MyReview myReview: observableReviews){
+            System.out.println(myReview.getDepartment());
+            System.out.println(myReview.getCourseNumber());
+            System.out.println(myReview.getRating());
+            System.out.println(myReview.getReviewText());
+            System.out.println(myReview.getTimestamp());
+            System.out.println(myReview.getCourseID());
+        }
 
-        System.out.println(observableReviews);
+        col_department.setCellValueFactory(new PropertyValueFactory<MyReview, String>("department"));
+        col_courseNum.setCellValueFactory(new PropertyValueFactory<MyReview, String>("courseNumber"));
+        col_rating.setCellValueFactory(new PropertyValueFactory<MyReview, Integer>("rating"));
+        col_comment.setCellValueFactory(new PropertyValueFactory<MyReview, String>("reviewText"));
+        col_date.setCellValueFactory(new PropertyValueFactory<MyReview, Timestamp>("timestamp"));
+        col_courseID.setCellValueFactory(new PropertyValueFactory<MyReview, Integer>("courseID"));
 
-//        col_department.setCellValueFactory(new PropertyValueFactory<MyReview, String>("department"));
-//        col_courseNum.setCellValueFactory(new PropertyValueFactory<MyReview, String>("courseNumber"));
-//        col_rating.setCellValueFactory(new PropertyValueFactory<MyReview, Integer>("rating"));
-//        col_comment.setCellValueFactory(new PropertyValueFactory<MyReview, String>("reviewText"));
-//        col_date.setCellValueFactory(new PropertyValueFactory<MyReview, Timestamp>("timestamp"));
-//        col_courseID.setCellValueFactory(new PropertyValueFactory<MyReview, Integer>("courseID"));
-//
-//        myReviews.setItems(observableReviews);
+        myReviews.setItems(observableReviews);
     }
 
 }

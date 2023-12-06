@@ -53,6 +53,7 @@ public class LoginController {
         return  activeUser;
     }
 
+    UsernameSingleton currentUsername = UsernameSingleton.getInstance();
     @FXML
     void handleLogin(ActionEvent event) throws IOException, SQLException {
         // Capture the username and password when the login button is clicked
@@ -60,6 +61,8 @@ public class LoginController {
         password = password_text_box.getText();
 
         setActiveUser(new User(username, password));
+        currentUsername.setUsername(username);
+
 
 
         // Now you can perform the login logic, such as validation or authentication
@@ -87,16 +90,11 @@ public class LoginController {
 
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-
-
         SearchController searchController = new SearchController();
         searchController.setActiveUser(getActiveUser());
 
-
-
         MyReviewsController myReviewsController = new MyReviewsController();
         myReviewsController.setActiveUser(getActiveUser());
-
 
         scene = new Scene(root);
         stage.setTitle("Course Search");

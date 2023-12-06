@@ -48,12 +48,6 @@ public class SearchController {
         root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/my-reviews.fxml").toURI().toURL());
 
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        MyReviewsController myReviewsController = new MyReviewsController();
-        //System.out.println(myReviewsController.getActiveUser().getUsername());
-
-//        myReviewsController.populateTable();
-
         scene = new Scene(root);
         stage.setTitle("My Reviews");
         stage.setScene(scene);
