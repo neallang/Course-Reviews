@@ -283,9 +283,9 @@ public class DatabaseDriver {
             var ReviewText = resultSet.getString(1);
             var Rating = resultSet.getInt(2);
             var ReviewTime = resultSet.getTimestamp(3);
-            var CourseNumber = resultSet.getString(4);
-            var Department = resultSet.getString(5);
-            var CourseID = resultSet.getInt(6);
+            var CourseNumber = resultSet.getString(6);
+            var Department = resultSet.getString(7);
+            var CourseID = resultSet.getInt(5);
 
 
             MyReview myReview = new MyReview(ReviewText, Rating, ReviewTime, CourseNumber, Department, CourseID);
