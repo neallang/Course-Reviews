@@ -319,6 +319,33 @@ public class DatabaseDriver {
         return myReviews;
     }
 
+    public int getCourseID(String title) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT ID FROM Courses where Title = " + "\'" + title + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.getInt(1);
+    }
+
+    public double getAverageReview(int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        double average = 0.0;
+        double total = 0;
+        double numReviews = 0;
+        PreparedStatement statement = connection.prepareStatement("SELECT Rating FROM Reviews where CourseID = " + courseID);
+        ResultSet resultSet = statement.executeQuery();
+        while(resultSet.next()){
+            int currentRating = resultSet.getInt(1);
+            total += currentRating;
+            numReviews++;
+        }
+        average = total/numReviews;
+        return average;
+
+    }
 
 
 
