@@ -32,8 +32,16 @@ public class MyReviewsController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-
     private User activeUser;
+    private int courseID;
+
+    public int getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(int courseID) {
+        this.courseID = courseID;
+    }
 
     public void setActiveUser(User user){
         this.activeUser = user;
@@ -89,12 +97,24 @@ public class MyReviewsController {
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         scene = new Scene(root);
-        stage.setTitle("Log In");
+        stage.setTitle("Login");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchToCourseReviews(javafx.event.ActionEvent actionEvent) throws IOException {
+        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
+
+        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        scene = new Scene(root);
+        stage.setTitle("Course Reviews");
         stage.setScene(scene);
         stage.show();
     }
 
     UsernameSingleton currentUsername = UsernameSingleton.getInstance();
+    CourseIDSingleton currentCourseID = CourseIDSingleton.getInstance();
     public void initialize() throws IOException, SQLException{
 
         String username = currentUsername.getUsername();
@@ -121,8 +141,18 @@ public class MyReviewsController {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 1 && (!row.isEmpty())) {
                     MyReview rowData = row.getItem();
-                    int courseID = rowData.getCourseID(); // Assuming there's a method to get courseID
-                    System.out.println("Clicked on CourseID: " + courseID);
+                    setCourseID(rowData.getCourseID());
+                    currentCourseID.setCourseID(courseID);
+                    try {
+                        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
+                        // Switch to the new scene
+                        Stage stage = (Stage) myReviews.getScene().getWindow();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     // Perform actions based on the clicked courseID or rowData
                 }
             });
