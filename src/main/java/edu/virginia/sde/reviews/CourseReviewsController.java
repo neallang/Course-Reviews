@@ -104,7 +104,7 @@ public class CourseReviewsController {
         int courseID = courseIDSingleton.getCourseID();
         databaseDriver.connect();
         ArrayList<Review> reviewArrayList= databaseDriver.getCourseReviews(courseID);
-        double average = databaseDriver.getAverageReview(courseID);
+        double average = databaseDriver.getAverageCourseRating(courseID);
 
 //        if (stanFuncTrue){
 //            load review
