@@ -112,7 +112,18 @@ public class SearchController {
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>("averageCourseRating"));
+        ratingCol.setCellFactory(ratings -> new TableCell<Course, Double>(){
+            @Override
+            protected void updateItem(Double item, boolean empty){
+                super.updateItem(item, empty);
+                if(item == null || empty){
+                    setText(null);
+                }else{
+                    setText(String.format("%.2f", item));
+                }
+            }
 
+        });
 
         displayCourses.setItems(observableCourses);
         displayCourses.setRowFactory(tv -> {
