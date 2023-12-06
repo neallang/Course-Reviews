@@ -219,6 +219,15 @@ public class DatabaseDriver {
 
     }
 
+    public boolean courseAlreadyExists(String department, String title) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Courses WHERE Department = " + "\'" + department + "\'" + " AND Title = " + "\'" + title + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.next();
+   }
+
     public ArrayList<Course> getAllCourses() throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");

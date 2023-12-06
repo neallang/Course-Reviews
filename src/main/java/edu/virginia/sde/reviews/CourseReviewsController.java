@@ -30,6 +30,7 @@ public class CourseReviewsController {
     @FXML
     private RadioButton button_one, button_two, button_three, button_four, button_five;
     private Timestamp timestamp;
+    private int courseID;
     UsernameSingleton currentUsername = UsernameSingleton.getInstance();
     int rating = -1;
     String comment;
@@ -101,7 +102,7 @@ public class CourseReviewsController {
 
     public void initialize() throws IOException, SQLException {
         CourseIDSingleton courseIDSingleton = CourseIDSingleton.getInstance();
-        int courseID = courseIDSingleton.getCourseID();
+        courseID = courseIDSingleton.getCourseID();
         databaseDriver.connect();
         ArrayList<Review> reviewArrayList= databaseDriver.getCourseReviews(courseID);
         double average = databaseDriver.getAverageCourseRating(courseID);
@@ -126,31 +127,34 @@ public class CourseReviewsController {
 
     }
 
-    //called on save button click
-    public void addReview(){
-        if (currentReviewSingleton.getRating() == -1) {
-            null_rating_label.setText("You must enter a rating.");
-        }
-//        else if (!stanFunc && rating != -1) {
-//            null_rating_label.setText("Rating is set.");
-            //add new
-//        }
-//        else if (stanFuncTrue && rating != -1) {
-//        null_rating_label.setText("Rating is set.");
-//            edit old
-//        }
-    }
 
-    public void save(javafx.event.ActionEvent actionEvent){
-        currentReviewSingleton.setRating(rating);
-        setComment();
-        currentReviewSingleton.setComment(comment);
-        System.out.println(currentReviewSingleton.getRating());
-        addReview();
-    }
-
-
-
+//    public void save(javafx.event.ActionEvent actionEvent) throws SQLException {
+//        databaseDriver.connect();
+//        boolean userReviewAlreadyExists = databaseDriver.userAlreadyExists(currentUsername.getUsername());
+//
+//
+//        int userID = databaseDriver.getUserID(currentUsername.getUsername());
+//
+//
+//
+//        setComment();
+//        CurrentReviewSingleton.getInstance().setComment(this.comment);
+//        CurrentReviewSingleton.getInstance().setRating(rating);
+//        timestamp = new Timestamp(java.lang.System.currentTimeMillis());
+//
+//        Review review = new Review(userID, courseID, currentReviewSingleton.getComment(), currentReviewSingleton.getRating(), timestamp);
+//
+//        addReview(review);
+//
+//    }
+//
+//    public void addReview(Review review) throws SQLException {
+//
+//        databaseDriver.addReview(review);
+//        databaseDriver.commit();
+//        databaseDriver.disconnect();
+//        //initialize();
+//    }
 
 
     }
