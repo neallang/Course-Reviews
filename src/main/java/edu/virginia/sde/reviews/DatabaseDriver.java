@@ -107,6 +107,7 @@ public class DatabaseDriver {
                     CourseID  INTEGER    not null,
                     ReviewText   TEXT    not null,
                     Rating    INTEGER    not null,
+                    ReviewTime  TIMESTAMP    not null,
                     FOREIGN KEY (UserID) references Users(ID)
                         on delete cascade,
                     FOREIGN KEY (CourseID) references Courses(ID)
@@ -171,6 +172,16 @@ public class DatabaseDriver {
         return users;
 
     }
+
+    public int getUserID(String username) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT ID FROM Users where Username = " + "\'" + username + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.getInt(1);
+    }
+
 
     public boolean autheticateUser(String username, String password) throws SQLException{
         if (connection.isClosed()){
@@ -247,11 +258,12 @@ public class DatabaseDriver {
 
     public void addReview(Review review) throws SQLException{
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO Reviews(UserID, CourseID, ReviewText, Rating) values (?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Reviews(UserID, CourseID, ReviewText, Rating, ReviewTime) values (?, ?, ?, ?, ?)");
             statement.setInt(1, review.getUserID());
             statement.setInt(2, review.getCourseID());
             statement.setString(3, review.getReviewText());
             statement.setInt(4, review.getRating());
+            statement.setTimestamp(5,review.getTimeStamp());
             statement.executeUpdate();
         } catch (SQLException e) {
             rollback(); //rolls back any changes before the Exception was thrown
@@ -260,6 +272,80 @@ public class DatabaseDriver {
 
     }
 
+    public ArrayList<MyReview> getMyReviews(int userID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("select Reviews.ReviewText, Reviews.Rating, Reviews.ReviewTime, Reviews.UserID, Reviews.CourseID, Courses.CourseNumber, Courses.Department, Courses.ID from Reviews full join Courses on Reviews.CourseID = Courses.ID where Reviews.UserID = " + userID );
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<MyReview> myReviews = new ArrayList<>();
+        while (resultSet.next()) {
+            var ReviewText = resultSet.getString(1);
+            var Rating = resultSet.getInt(2);
+            var ReviewTime = resultSet.getTimestamp(3);
+            var CourseNumber = resultSet.getString(6);
+            var Department = resultSet.getString(7);
+            var CourseID = resultSet.getInt(5);
+
+
+            MyReview myReview = new MyReview(ReviewText, Rating, ReviewTime, CourseNumber, Department, CourseID);
+            myReviews.add(myReview);
+        }
+        return myReviews;
+    }
+
+
+
+
+    public ArrayList<MyReview> getCourseReviews(String courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("select Reviews.ReviewText, Reviews.Rating, Reviews.ReviewTime, Reviews.UserID, Reviews.CourseID, Courses.CourseNumber, Courses.Department, Courses.ID from Reviews full join Courses on Reviews.CourseID = Courses.ID where Reviews.CourseID = " + courseID );
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<MyReview> myReviews = new ArrayList<>();
+        while (resultSet.next()) {
+            var ReviewText = resultSet.getString(1);
+            var Rating = resultSet.getInt(2);
+            var ReviewTime = resultSet.getTimestamp(3);
+            var CourseNumber = resultSet.getString(4);
+            var Department = resultSet.getString(5);
+            var CourseID = resultSet.getInt(6);
+
+
+            MyReview myReview = new MyReview(ReviewText, Rating, ReviewTime, CourseNumber, Department, CourseID);
+            myReviews.add(myReview);
+        }
+        return myReviews;
+    }
+
+    public int getCourseID(String title) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT ID FROM Courses where Title = " + "\'" + title + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.getInt(1);
+    }
+
+    public double getAverageReview(int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        double average = 0.0;
+        double total = 0;
+        double numReviews = 0;
+        PreparedStatement statement = connection.prepareStatement("SELECT Rating FROM Reviews where CourseID = " + courseID);
+        ResultSet resultSet = statement.executeQuery();
+        while(resultSet.next()){
+            int currentRating = resultSet.getInt(1);
+            total += currentRating;
+            numReviews++;
+        }
+        average = total/numReviews;
+        return average;
+
+    }
 
 
 
@@ -293,5 +379,12 @@ public class DatabaseDriver {
         ArrayList<Course> courses = getAllCourses();
         ArrayList<User> users = getAllUsers();
         return courses.isEmpty() || users.isEmpty();
+    }
+
+    public void dropReviewsTable() throws SQLException{
+        Statement dropReviews = connection.createStatement();
+        String dropReviewsString = "DROP TABLE Reviews";
+        dropReviews.execute(dropReviewsString);
+        dropReviews.close();
     }
 }

@@ -3,6 +3,7 @@ package edu.virginia.sde.reviews;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,12 +15,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 
 public class MyReviewsController {
@@ -31,30 +36,39 @@ public class MyReviewsController {
     private Scene scene;
     private Parent root;
 
+    private User activeUser;
+
+    public void setActiveUser(User user){
+        this.activeUser = user;
+    }
+    public User getActiveUser(){
+        return this.activeUser;
+    }
+
+
 
     @FXML
-    private TableColumn<Review,String> col_comment;
+    private TableColumn<MyReview,String> col_comment;
 
     @FXML
-    private TableColumn<Review, Timestamp> col_date;
+    private TableColumn<MyReview,Timestamp> col_date;
 
     @FXML
-    private TableColumn<?,?> col_courseNum;
+    private TableColumn<MyReview,String> col_courseNum;
 
     @FXML
-    private TableColumn<Review,Integer> col_rating;
+    private TableColumn<MyReview,Integer> col_rating;
 
     @FXML
-    private TableColumn<?,?> col_department;
+    private TableColumn<MyReview,String> col_department;
 
     @FXML
-    private TableView<Review> myReviews;
+    private TableColumn<MyReview, Integer> col_courseID;
 
+    @FXML
+    private TableView<MyReview> myReviews;
 
-
-
-
-
+    DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
 
 
     public void switchToSearch(ActionEvent event) throws IOException {
@@ -83,5 +97,27 @@ public class MyReviewsController {
         stage.show();
     }
 
+    UsernameSingleton currentUsername = UsernameSingleton.getInstance();
+    public void initialize() throws IOException, SQLException{
+
+        String username = currentUsername.getUsername();
+
+        databaseDriver.connect();
+        int userID = databaseDriver.getUserID(username);
+
+
+        ArrayList<MyReview> myReviewList = databaseDriver.getMyReviews(userID);
+        databaseDriver.disconnect();
+        ObservableList<MyReview> observableReviews = FXCollections.observableArrayList(myReviewList);
+        col_department.setCellValueFactory(new PropertyValueFactory<MyReview, String>("department"));
+        col_courseNum.setCellValueFactory(new PropertyValueFactory<MyReview, String>("courseNumber"));
+        col_rating.setCellValueFactory(new PropertyValueFactory<MyReview, Integer>("rating"));
+        col_comment.setCellValueFactory(new PropertyValueFactory<MyReview, String>("reviewText"));
+        col_date.setCellValueFactory(new PropertyValueFactory<MyReview, Timestamp>("timestamp"));
+        col_courseID.setCellValueFactory(new PropertyValueFactory<MyReview, Integer>("courseID"));
+
+
+        myReviews.setItems(observableReviews);
+    }
 
 }

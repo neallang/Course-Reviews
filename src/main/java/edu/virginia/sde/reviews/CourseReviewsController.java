@@ -1,20 +1,22 @@
 package edu.virginia.sde.reviews;
 
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
 
 import java.io.File;
 import java.io.IOException;
-
+import java.sql.Timestamp;
 
 
 public class CourseReviewsController {
@@ -25,6 +27,7 @@ public class CourseReviewsController {
     private Parent root;
     @FXML
     private RadioButton button_one, button_two, button_three, button_four, button_five;
+    private Timestamp timestamp;
 
 
     public void getReviewNumber(ActionEvent event){
@@ -76,6 +79,49 @@ public class CourseReviewsController {
         stage.setScene(scene);
         stage.show();
     }
+
+
+
+    //plan of action:
+    //load in other reviews of this course
+            //find this via the course ID
+
+    //check if the current user has submitted a review
+    //if they have, don't let them enter information unless they DELETE
+    //if they haven't, be able to enter information and SAVE - once saved, update table
+
+
+    //configure the table - has a foreign key that links to ID of course
+
+    //stanley makes a method to return all reviews for a given course
+    @FXML private TableView<Review> tableView;
+    @FXML private TableColumn<Review, Integer> ratingColumn;    //rating
+    @FXML private TableColumn<Review, String> commentColumn;      //reviewText
+    @FXML private TableColumn<Review, Timestamp> dateTimeColumn;     //timeStamp
+
+    public void tableStuff(){
+        //setting up columns
+        ratingColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("rating"));
+        commentColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("comment"));
+        dateTimeColumn.setCellValueFactory(new PropertyValueFactory<Review, Timestamp>("timestamp"));
+
+        //loading data
+        tableView.setItems(getReviews());
+
+    }
+    public ObservableList<Review> getReviews(){ //unmade method - stanley will write this
+        Timestamp mockTimestamp = new Timestamp(1,2,3,4,5,6,7);
+
+        ObservableList<Review> reviews = FXCollections.observableArrayList();
+        reviews.add(new Review(1, 2, "i hate this class", 4, mockTimestamp));
+
+        return reviews;
+
+    }
+
+
+
+
 
 
 }

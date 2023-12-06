@@ -28,18 +28,40 @@ public class LoginController {
     @FXML
     private TextField username_text_box;
 
-    protected String username;
-    protected String password;
+    private String username;
+
+
+    private String password;
 
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private User activeUser;
 
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public void setActiveUser(User user){
+        this.activeUser = user;
+    }
+    public User getActiveUser(){
+        return  activeUser;
+    }
+
+    UsernameSingleton currentUsername = UsernameSingleton.getInstance();
     @FXML
     void handleLogin(ActionEvent event) throws IOException, SQLException {
         // Capture the username and password when the login button is clicked
         username = username_text_box.getText();
         password = password_text_box.getText();
+
+        setActiveUser(new User(username, password));
+        currentUsername.setUsername(username);
 
 
 
@@ -68,6 +90,12 @@ public class LoginController {
 
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
+        SearchController searchController = new SearchController();
+        searchController.setActiveUser(getActiveUser());
+
+        MyReviewsController myReviewsController = new MyReviewsController();
+        myReviewsController.setActiveUser(getActiveUser());
+
         scene = new Scene(root);
         stage.setTitle("Course Search");
         stage.setScene(scene);
@@ -84,4 +112,6 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
+
+
 }
