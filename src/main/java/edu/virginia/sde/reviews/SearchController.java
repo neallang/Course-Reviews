@@ -102,13 +102,31 @@ public class SearchController {
     public void initialize() throws IOException, SQLException{
         databaseDriver.connect();
         ArrayList<Course> courseArrayList = databaseDriver.getAllCourses();
-        databaseDriver.disconnect();
+
         ObservableList<Course> observableCourses = FXCollections.observableArrayList(courseArrayList);
         numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
 
         displayCourses.setItems(observableCourses);
+        displayCourses.setRowFactory(tv -> {
+            TableRow<Course> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 1 && (!row.isEmpty())) {
+                    Course rowData = row.getItem();
+                    int courseID = 0; // Assuming there's a method to get courseID
+                    try {
+                        courseID = databaseDriver.getCourseID(rowData.getTitle());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println("Clicked on CourseID: " + courseID);
+                    // Perform actions based on the clicked courseID or rowData
+                }
+            });
+            return row;
+        });
+        databaseDriver.disconnect();
     }
 
 
