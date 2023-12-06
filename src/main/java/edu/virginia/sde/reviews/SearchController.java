@@ -118,18 +118,18 @@ public class SearchController {
         numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
-        reviewsCol.setCellFactory(view -> new TableCell<Button, Void>(){
-            private Button viewButton() throws IOException{
-                Button button = new Button("View");
-                button.setOnAction(event -> {
-                    try{
-                        switchToMyReviews(event);
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                });
-            }
-        });
+//        reviewsCol.setCellFactory(view -> new TableCell<Button, Void>(){
+//            private Button viewButton() throws IOException{
+//                Button button = new Button("View");
+//                button.setOnAction(event -> {
+//                    try{
+//                        switchToMyReviews(event);
+//                    }catch (IOException e){
+//                        e.printStackTrace();
+//                    }
+//                });
+//            }
+//        });
 
         displayCourses.setItems(observableCourses);
     }
