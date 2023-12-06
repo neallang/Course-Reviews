@@ -91,6 +91,7 @@ public class MyReviewsController {
 
     public void populateTable() throws SQLException {
         databaseDriver.connect();
-        databaseDriver.getMyReviews(username);
+        int userID = databaseDriver.getUserID(username);
+
     }
 }

@@ -272,7 +272,7 @@ public class DatabaseDriver {
 
     }
 
-    public ArrayList<MyReview> getMyReviews(String userID) throws SQLException{
+    public ArrayList<MyReview> getMyReviews(int userID) throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
