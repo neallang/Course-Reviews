@@ -8,8 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.When;
 import java.io.File;
 import java.io.IOException;
 
