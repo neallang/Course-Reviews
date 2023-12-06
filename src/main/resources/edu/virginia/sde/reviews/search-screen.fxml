@@ -33,8 +33,8 @@
       <GridPane layoutY="52.0" prefHeight="24.0" prefWidth="600.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="91.0" minWidth="10.0" prefWidth="56.774147033691406" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.44342041015625" minWidth="10.0" prefWidth="95.7258529663086" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.0" minWidth="10.0" prefWidth="56.81463623046875" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.44342041015625" minWidth="10.0" prefWidth="95.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.0" minWidth="10.0" prefWidth="56.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" prefWidth="74.18536376953125" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="44.145355224609375" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.85464477539062" minWidth="10.0" prefWidth="202.85464477539062" />
@@ -52,17 +52,17 @@
                   <Font size="12.0" />
                </font>
             </Text>
-            <TextField GridPane.columnIndex="1">
+            <TextField fx:id="subjectSearch" prefHeight="26.0" prefWidth="87.0" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </TextField>
-            <TextField GridPane.columnIndex="3">
+            <TextField fx:id="courseNumSearch" GridPane.columnIndex="3">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </TextField>
-            <TextField GridPane.columnIndex="5">
+            <TextField fx:id="courseTitleSearch" GridPane.columnIndex="5">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -90,15 +90,34 @@
             </Button>
          </children>
       </GridPane>
-      <TableView fx:id="displayCourses" layoutY="83.0" prefHeight="272.0" prefWidth="614.0">
+      <TableView fx:id="displayCourses" layoutY="83.0" prefHeight="283.0" prefWidth="614.0">
         <columns>
           <TableColumn fx:id="subjectCol" prefWidth="59.0" text="Subject" />
           <TableColumn fx:id="numCol" prefWidth="75.0" text="Number" />
-            <TableColumn fx:id="titleCol" prefWidth="407.0" text="Title" />
-            <TableColumn prefWidth="72.0" text="Rating" />
+            <TableColumn fx:id="titleCol" prefWidth="422.0" text="Title" />
+            <TableColumn fx:id="ratingCol" prefWidth="57.0" text="Rating" />
         </columns>
       </TableView>
       <Button layoutX="6.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" />
       <Button layoutX="525.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToMyReviews" text="My Reviews" />
+      <GridPane layoutX="44.0" layoutY="371.0" prefHeight="30.0" prefWidth="512.0" AnchorPane.bottomAnchor="2.5">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="10.0" prefWidth="97.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="61.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" prefWidth="65.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="196.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="96.0" minWidth="10.0" prefWidth="81.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add New Course:" />
+            <TextField fx:id="subjectAdd" promptText="Subject" GridPane.columnIndex="1" />
+            <TextField fx:id="courseNumAdd" promptText="Number" GridPane.columnIndex="2" />
+            <TextField fx:id="courseTitleAdd" promptText="Title" GridPane.columnIndex="3" />
+            <Button mnemonicParsing="false" onAction="#addCourseInSearch" prefHeight="26.0" prefWidth="96.0" text="Add Course" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>
