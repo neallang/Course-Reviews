@@ -339,6 +339,18 @@ public class DatabaseDriver {
         }
     }
 
+    public boolean userReviewExists(String username, int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        int userID = getUserID(username);
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Reviews where UserID = " + userID + " and CourseID = " + courseID);
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.next();
+
+    }
+
+
     public void updateAverageCourseRating(int courseID) throws SQLException{
         try {
             double newAverage = getAverageCourseRating(courseID);
