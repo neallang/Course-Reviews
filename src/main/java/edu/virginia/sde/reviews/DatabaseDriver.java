@@ -335,11 +335,11 @@ public class DatabaseDriver {
 
 
 
-    public ArrayList<Review> getCourseReviews(String courseID) throws SQLException{
+    public ArrayList<Review> getCourseReviews(int courseID) throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
-        PreparedStatement statement = connection.prepareStatement("select * from Review where CourseID = " + courseID );
+        PreparedStatement statement = connection.prepareStatement("select * from Reviews where CourseID = " + courseID );
         ResultSet resultSet = statement.executeQuery();
         ArrayList<Review> reviews = new ArrayList<>();
         while (resultSet.next()) {

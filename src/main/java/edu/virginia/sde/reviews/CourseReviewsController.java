@@ -11,8 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 
 import javafx.event.ActionEvent;
 
@@ -20,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 
 public class CourseReviewsController {
@@ -31,6 +30,7 @@ public class CourseReviewsController {
     @FXML
     private RadioButton button_one, button_two, button_three, button_four, button_five;
     private Timestamp timestamp;
+
 
 
     public void getReviewNumber(ActionEvent event){
@@ -52,7 +52,7 @@ public class CourseReviewsController {
     }
 
 
-//    public void goBack() {
+    //    public void goBack() {
 //        back_button.setText("You pressed the button!");
 //    }
     @FXML
@@ -83,15 +83,30 @@ public class CourseReviewsController {
         stage.show();
     }
 
+
+
+
     @FXML private TableView<Review> tableView;
     @FXML private TableColumn<Review, Integer> ratingColumn;    //rating
     @FXML private TableColumn<Review, String> commentColumn;      //reviewText
     @FXML private TableColumn<Review, Timestamp> dateTimeColumn;     //timeStamp
-    @FXML private Label course_title_label;
+    DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
 
-    CourseIDSingleton currentCourseID = CourseIDSingleton.getInstance();
     public void initialize() throws IOException, SQLException {
-        course_title_label.setText(currentCourseID.toString());
+        CourseIDSingleton courseIDSingleton = CourseIDSingleton.getInstance();
+        int courseID = courseIDSingleton.getCourseID();
+        databaseDriver.connect();
+        ArrayList<Review> reviewArrayList= databaseDriver.getCourseReviews(courseID);
+        databaseDriver.disconnect();
+
+        ObservableList<Review> observableReviewList = FXCollections.observableArrayList(reviewArrayList);
+        ratingColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("rating"));
+        commentColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("reviewText"));
+        dateTimeColumn.setCellValueFactory(new PropertyValueFactory<Review, Timestamp>("timeStamp"));
+
+        tableView.setItems(observableReviewList);
+
+
 
 
 
@@ -101,5 +116,5 @@ public class CourseReviewsController {
 
 
 
+    }
 
-}
