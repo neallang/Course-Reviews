@@ -1,6 +1,5 @@
 package edu.virginia.sde.reviews;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,7 +15,10 @@ import javafx.event.ActionEvent;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 
 public class CourseReviewsController {
@@ -28,30 +30,37 @@ public class CourseReviewsController {
     @FXML
     private RadioButton button_one, button_two, button_three, button_four, button_five;
     private Timestamp timestamp;
+    UsernameSingleton currentUsername = UsernameSingleton.getInstance();
+    int rating = -1;
+    String comment;
+    CurrentReviewSingleton currentReviewSingleton = CurrentReviewSingleton.getInstance();
+    @FXML TextField comment_text_box;
+    @FXML Label null_rating_label;
 
 
-    public void getReviewNumber(ActionEvent event){
-        if (button_one.isSelected()){
-            button_one.setText("button one selected");  //will change this to update the review value
+
+    public void setRatingNumber(ActionEvent event){
+        if (button_one.isSelected() ){
+            rating = 1;
         }
         else if (button_two.isSelected()){
-            button_two.setText("button two selected");  //will change this to update the review value
+            rating = 2;
         }
         else if (button_three.isSelected()){
-            button_three.setText("button three selected");  //will change this to update the review value
+            rating = 3;
         }
         else if (button_four.isSelected()){
-            button_four.setText("button four selected");  //will change this to update the review value
+            rating = 4;
         }
         else if (button_five.isSelected()){
-            button_five.setText("button five selected");  //will change this to update the review value
+            rating = 5;
         }
     }
 
+    public void setComment(){
+        this.comment = comment_text_box.getText();
+    }
 
-//    public void goBack() {
-//        back_button.setText("You pressed the button!");
-//    }
     @FXML
     public void switchToSearch(ActionEvent event) throws IOException {
         try {
@@ -82,46 +91,67 @@ public class CourseReviewsController {
 
 
 
-    //plan of action:
-    //load in other reviews of this course
-            //find this via the course ID
 
-    //check if the current user has submitted a review
-    //if they have, don't let them enter information unless they DELETE
-    //if they haven't, be able to enter information and SAVE - once saved, update table
-
-
-    //configure the table - has a foreign key that links to ID of course
-
-    //stanley makes a method to return all reviews for a given course
     @FXML private TableView<Review> tableView;
     @FXML private TableColumn<Review, Integer> ratingColumn;    //rating
     @FXML private TableColumn<Review, String> commentColumn;      //reviewText
     @FXML private TableColumn<Review, Timestamp> dateTimeColumn;     //timeStamp
+    @FXML private Label average_review_double;
+    DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
 
-    public void tableStuff(){
-        //setting up columns
+    public void initialize() throws IOException, SQLException {
+        CourseIDSingleton courseIDSingleton = CourseIDSingleton.getInstance();
+        int courseID = courseIDSingleton.getCourseID();
+        databaseDriver.connect();
+        ArrayList<Review> reviewArrayList= databaseDriver.getCourseReviews(courseID);
+        double average = databaseDriver.getAverageReview(courseID);
+
+//        if (stanFuncTrue){
+//            load review
+//        }
+
+        databaseDriver.disconnect();
+
+        ObservableList<Review> observableReviewList = FXCollections.observableArrayList(reviewArrayList);
         ratingColumn.setCellValueFactory(new PropertyValueFactory<Review, Integer>("rating"));
-        commentColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("comment"));
-        dateTimeColumn.setCellValueFactory(new PropertyValueFactory<Review, Timestamp>("timestamp"));
+        commentColumn.setCellValueFactory(new PropertyValueFactory<Review, String>("reviewText"));
+        dateTimeColumn.setCellValueFactory(new PropertyValueFactory<Review, Timestamp>("timeStamp"));
 
-        //loading data
-        tableView.setItems(getReviews());
+        tableView.setItems(observableReviewList);
 
-    }
-    public ObservableList<Review> getReviews(){ //unmade method - stanley will write this
-        Timestamp mockTimestamp = new Timestamp(1,2,3,4,5,6,7);
+        DecimalFormat df = new DecimalFormat("#.##");
+        String roundedAverage = df.format(average);
+        average_review_double.setText(roundedAverage);
 
-        ObservableList<Review> reviews = FXCollections.observableArrayList();
-        reviews.add(new Review(1, 2, "i hate this class", 4, mockTimestamp));
-
-        return reviews;
 
     }
 
+    //called on save button click
+    public void addReview(){
+        if (currentReviewSingleton.getRating() == -1) {
+            null_rating_label.setText("You must enter a rating.");
+        }
+//        else if (!stanFunc && rating != -1) {
+//            null_rating_label.setText("Rating is set.");
+            //add new
+//        }
+//        else if (stanFuncTrue && rating != -1) {
+//        null_rating_label.setText("Rating is set.");
+//            edit old
+//        }
+    }
+
+    public void save(javafx.event.ActionEvent actionEvent){
+        currentReviewSingleton.setRating(rating);
+        setComment();
+        currentReviewSingleton.setComment(comment);
+        System.out.println(currentReviewSingleton.getRating());
+        addReview();
+    }
 
 
 
 
 
-}
+    }
+
