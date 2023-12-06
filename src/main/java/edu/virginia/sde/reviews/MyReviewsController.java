@@ -109,15 +109,6 @@ public class MyReviewsController {
         ArrayList<MyReview> myReviewList = databaseDriver.getMyReviews(userID);
         databaseDriver.disconnect();
         ObservableList<MyReview> observableReviews = FXCollections.observableArrayList(myReviewList);
-        for (MyReview myReview: observableReviews){
-            System.out.println(myReview.getDepartment());
-            System.out.println(myReview.getCourseNumber());
-            System.out.println(myReview.getRating());
-            System.out.println(myReview.getReviewText());
-            System.out.println(myReview.getTimestamp());
-            System.out.println(myReview.getCourseID());
-        }
-
         col_department.setCellValueFactory(new PropertyValueFactory<MyReview, String>("department"));
         col_courseNum.setCellValueFactory(new PropertyValueFactory<MyReview, String>("courseNumber"));
         col_rating.setCellValueFactory(new PropertyValueFactory<MyReview, Integer>("rating"));
