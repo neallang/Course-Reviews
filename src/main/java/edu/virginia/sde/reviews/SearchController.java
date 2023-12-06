@@ -1,22 +1,29 @@
 package edu.virginia.sde.reviews;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ObservableStringValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.*;
 import javafx.collections.*;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TableView;
+
+import java.util.*;
 
 
 
@@ -28,17 +35,17 @@ public class SearchController {
     private Scene scene;
     private Parent root;
     @FXML
-    private TableColumn<?,?> subjectCol;
+    private TableColumn<Course,String> subjectCol;
     @FXML
-    private TableColumn<?,?> numCol;
+    private TableColumn<Course,String> numCol;
     @FXML
-    private TableColumn<?,?> titleCol;
+    private TableColumn<Course,String> titleCol;
     @FXML
     private TableColumn<?,?> ratingCol;
     @FXML
-    private TableColumn<?,?> reviewsCol;
+    private TableColumn<Button,Void> reviewsCol;
     @FXML
-    private TableColumn<?,?> addCol;
+    private TableColumn<?,Button> addCol;
     @FXML
     private TextField subject;
     @FXML
@@ -46,9 +53,9 @@ public class SearchController {
     @FXML
     private TextField courseTitle;
     @FXML
-    private TableView displayCourses;
+    private TableView<Course> displayCourses;
 
-
+    DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
 
     public void handleCourseIDButton() {
         messageLabel.setText("You pressed the button!");
@@ -60,7 +67,16 @@ public class SearchController {
         messageLabel.setText("You pressed the button!");
     }
 
-
+//    private Button viewButton() throws IOException{
+//        Button button = new Button("View");
+//        button.setOnAction(event -> {
+//            try{
+//                switchToMyReviews(event);
+//            }catch (IOException e){
+//                e.printStackTrace();
+//            }
+//        });
+//    }
     public void switchToMyReviews(javafx.event.ActionEvent actionEvent) throws IOException {
         root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/my-reviews.fxml").toURI().toURL());
 
@@ -68,6 +84,17 @@ public class SearchController {
 
         scene = new Scene(root);
         stage.setTitle("My Reviews");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchToCourseReview(javafx.event.ActionEvent actionEvent) throws IOException {
+        root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
+
+        stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        scene = new Scene(root);
+        stage.setTitle("Course");
         stage.setScene(scene);
         stage.show();
     }
@@ -82,52 +109,65 @@ public class SearchController {
         stage.setScene(scene);
         stage.show();
     }
-    /*
-    public void searchCourses(javafx.event.ActionEvent actionEvent) throws IOException {
-        try{
-            Connection con = ;
-            fetchCourses(con);
-            con.close();
-        } catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
-*/
 
-    private void fetchCourses(Connection con) throws SQLException{
-
-        ObservableList<Course> courses = FXCollections.observableArrayList();
-
-        // Mocking courses (replace this with your actual mock data)
-        Course course1 = new Course("Computer Science", "CS101", "Introduction to Programming");
-        Course course2 = new Course("Mathematics", "MATH202", "Calculus II");
-        Course course3 = new Course("Physics", "PHYS303", "Modern Physics");
-
-        // Adding mock courses to the ObservableList
-        courses.addAll(course1, course2, course3);
-
-        displayCourses.getItems().clear();
-        displayCourses.setItems(courses);
-
-        String query = "SELECT * FROM course WHERE department = ? AND courseNumber = ? LIKE title = ?";
-        String inputDept = subject.getText();
-        String inputNum = courseNum.getText();
-        String inputTitle = courseTitle.getText();
-        try (PreparedStatement findCourses = con.prepareStatement(query)){
-            findCourses.setString(1, inputDept);
-            findCourses.setString(2, inputNum);
-            findCourses.setString(3, "%" + inputTitle + "%");
-            ResultSet rs = findCourses.executeQuery();
-            while(rs.next()){
-                Course matchingCourse = new Course(rs.getString("department"),
-                        rs.getString("courseNum"), rs.getString("title"));
-                courses.add(matchingCourse);
+    public void initialize() throws IOException, SQLException{
+        databaseDriver.connect();
+        ArrayList<Course> courseArrayList = databaseDriver.getAllCourses();
+        databaseDriver.disconnect();
+        ObservableList<Course> observableCourses = FXCollections.observableArrayList(courseArrayList);
+        numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
+        subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
+        reviewsCol.setCellFactory(view -> new TableCell<Button, Void>(){
+            private Button viewButton() throws IOException{
+                Button button = new Button("View");
+                button.setOnAction(event -> {
+                    try{
+                        switchToMyReviews(event);
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                });
             }
+        });
 
-        }
-        displayCourses.getItems().clear();
-        displayCourses.setItems(courses);
+        displayCourses.setItems(observableCourses);
     }
 
+//    @FXML
+//    void searchCourses(javafx.event.ActionEvent actionEvent) throws IOException, SQLException {
+//
+//        databaseDriver.connect();
+//        //databaseDriver.getAllCourses();
+//        ArrayList<Course> courseArrayList = databaseDriver.getAllCourses();
+//        ObservableList<Course> observableCourses = FXCollections.observableArrayList(courseArrayList);
+//        System.out.println("This is in the observableList " + observableCourses.get(0).getTitle());
+//        databaseDriver.disconnect();
+//        numCol.setCellValueFactory(new PropertyValueFactory<>("courseNumber"));
+//
+//        displayCourses.setItems(observableCourses);
+//        List<Course> courseList = courseArrayList;
+//        ObservableList<Course> courses = FXCollections.observableList(courseList);
+//        displayCourses.setItems(courses);
+        //displayCourses.getItems().clear();
+//
+//        databaseDriver.connect();
+//
+//        ArrayList<Course> databaseCourses = databaseDriver.getAllCourses();
+//        databaseDriver.disconnect();
+//        String query = "SELECT * FROM course";
+//        String inputDept = subject.getText();
+//        String inputNum = courseNum.getText();
+//        String inputTitle = courseTitle.getText();
+//        for (Course course: databaseCourses){
+//            if (course.getCourseNumber().equalsIgnoreCase(inputNum) || course.getDepartment().equalsIgnoreCase(inputDept)
+//            || course.getTitle().equalsIgnoreCase(inputTitle)){
+//
+//                courses.add(course);
+//            }
+//        }
+//        displayCourses.setItems(courses);
+
+//        }
 
 }
