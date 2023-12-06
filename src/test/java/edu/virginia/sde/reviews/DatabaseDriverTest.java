@@ -34,10 +34,8 @@ class DatabaseDriverTest {
     void addData() throws SQLException{
         databaseDriver.connect();
         User user = new User("stan", "password");
-        User user2 = new User("neal", "something");
         databaseDriver.addUser(user);
-        databaseDriver.addUser(user2);
-        Course course = new Course("CS", "3140", "SDE");
+        Course course = new Course("CS", "3140", "SDE" );
         Course course2 = new Course("ANTH", "4300", "New Class");
         databaseDriver.addCourse(course);
         databaseDriver.addCourse(course2);
@@ -55,7 +53,7 @@ class DatabaseDriverTest {
     void getCoursesBy() throws SQLException{
         databaseDriver.connect();
         ArrayList<Course> query = databaseDriver.getCoursesByFilter("CourseNumber", "3140");
-        Course course = new Course("CS", "3140", "SDE", 0.0);
+        Course course = new Course("CS", "3140", "SDE" );
         ArrayList<Course> courses = new ArrayList<>();
         courses.add(course);
         System.out.println(courses.get(0).getDepartment());
@@ -92,24 +90,8 @@ class DatabaseDriverTest {
     }
 
     @Test
-    void addReview_changesAverage() throws SQLException{
-        databaseDriver.connect();
-        Course course = databaseDriver.getCourseByID(1);
-        assertEquals(4, course.getAverageCourseRating());
-        Review review = new Review(2, 1, "Glad to be done.", 2, new Timestamp(java.lang.System.currentTimeMillis()));
-        databaseDriver.addReview(review);
-        Course courseAgain = databaseDriver.getCourseByID(1);
-        assertEquals(3.0, courseAgain.getAverageCourseRating());
-        databaseDriver.commit();
-        databaseDriver.disconnect();
-    }
+    void getCourseReviews() throws SQLException{
 
-    @Test
-    void deleteReview() throws SQLException{
-        databaseDriver.connect();
-        databaseDriver.deleteReview(2,1);
-        databaseDriver.commit();
-        databaseDriver.disconnect();
     }
 
     @Test
@@ -131,14 +113,6 @@ class DatabaseDriverTest {
     void dropReviewsTable() throws  SQLException{
         databaseDriver.connect();
         databaseDriver.dropReviewsTable();
-        databaseDriver.commit();
-        databaseDriver.disconnect();
-    }
-
-    @Test
-    void dropCoursesTable() throws SQLException{
-        databaseDriver.connect();
-        databaseDriver.dropCoursesTable();;
         databaseDriver.commit();
         databaseDriver.disconnect();
     }

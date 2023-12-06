@@ -4,20 +4,11 @@ public class Course {
     private String department;
     private String courseNumber;
     private String title;
-    private double averageCourseRating;
 
     public Course(String department, String courseNumber, String title) {
         this.department = department;
         this.courseNumber = courseNumber;
         this.title = title;
-        this.averageCourseRating = 0.0;
-    }
-
-    public Course(String department, String courseNumber, String title, double averageCourseRating){
-        this.department = department;
-        this.courseNumber = courseNumber;
-        this.title = title;
-        this.averageCourseRating = averageCourseRating;
     }
 
     public String getDepartment() {
@@ -31,6 +22,4 @@ public class Course {
     public String getTitle() {
         return title;
     }
-
-    public double getAverageCourseRating() {return averageCourseRating; }
 }

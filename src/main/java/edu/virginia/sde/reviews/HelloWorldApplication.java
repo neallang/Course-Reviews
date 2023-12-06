@@ -23,9 +23,6 @@ public class HelloWorldApplication extends Application {
         stage.show();
         DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
         databaseDriver.connect();
-        databaseDriver.dropReviewsTable();
-        databaseDriver.dropCoursesTable();
-        databaseDriver.dropUsersTable();
         databaseDriver.createTables();
         if(databaseDriver.checkEmpty()){
             addData(databaseDriver);
@@ -40,7 +37,7 @@ public class HelloWorldApplication extends Application {
         Course course1 = new Course("CS", "3140", "Software Development Essentials");
         Course course2 = new Course("CS", "2100", "Data Structures and Algorithms I");
         Course course3 = new Course("ANTH", "2130", "Languages of the World");
-        Course course4 = new Course("JAPN", "1010", "First Year Japanese" );
+        Course course4 = new Course("JAPN", "1010", "First Year Japanese");
         User user1 = new User("Stanley", "password");
         User user2 = new User("Neal", "password");
         User user3 = new User("Danny", "password");
