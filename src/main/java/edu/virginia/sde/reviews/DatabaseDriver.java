@@ -255,6 +255,44 @@ public class DatabaseDriver {
 
     }
 
+    public ArrayList<Course> getCoursesBySearch(String department, String courseNumber, String title) throws SQLException{
+        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement;
+        if(department.isEmpty() && courseNumber.isEmpty() && title.isEmpty()){
+            return new ArrayList<Course>();
+        }  else if (department.isEmpty() && courseNumber.isEmpty()){
+            statement = connection.prepareStatement("SELECT * FROM Courses where Title LIKE " +  "\'%" + title + "%\'");
+        } else if (department.isEmpty() && title.isEmpty()) {
+            statement = connection.prepareStatement("SELECT * FROM Courses where CourseNumber = " + "\'" + courseNumber + "\'");
+        } else if (courseNumber.isEmpty() && title.isEmpty()){
+            statement = connection.prepareStatement("SELECT * FROM Courses where Department = " + "\'" + department + "\'");
+        } else if(department.isEmpty()){
+            statement = connection.prepareStatement("SELECT * FROM Courses where CourseNumber = " + "\'" + courseNumber + "\'" + " and Title LIKE " +  "\'%" + title + "%\'");
+        } else if(courseNumber.isEmpty()){
+            statement = connection.prepareStatement("SELECT * FROM Courses where Department = " + "\'" + department + "\'" + " and Title LIKE " +  "\'%" + title + "%\'");
+        } else if (title.isEmpty()){
+            statement = connection.prepareStatement("SELECT * FROM Courses where Department = " + "\'" + department + "\'" + " and CourseNumber = " + "\'" + courseNumber + "\'");
+        } else {
+            statement = connection.prepareStatement("SELECT * FROM Courses where Department = " + "\'" + department + "\'" + " and CourseNumber = " + "\'" + courseNumber + "\'" + " and Title LIKE " + "\'%" + title + "%\'");
+        }
+
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<Course> courses = new ArrayList<>();
+        while (resultSet.next()) {
+            var Department = resultSet.getString(2);
+            var CourseNumber = resultSet.getString(3);
+            var Title = resultSet.getString(4);
+
+
+            Course course = new Course(Department, CourseNumber, Title);
+            courses.add(course);
+        }
+        return courses;
+    }
+
 
     public void addReview(Review review) throws SQLException{
         try {
@@ -297,26 +335,24 @@ public class DatabaseDriver {
 
 
 
-    public ArrayList<MyReview> getCourseReviews(String courseID) throws SQLException{
+    public ArrayList<Review> getCourseReviews(String courseID) throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
-        PreparedStatement statement = connection.prepareStatement("select Reviews.ReviewText, Reviews.Rating, Reviews.ReviewTime, Reviews.UserID, Reviews.CourseID, Courses.CourseNumber, Courses.Department, Courses.ID from Reviews full join Courses on Reviews.CourseID = Courses.ID where Reviews.CourseID = " + courseID );
+        PreparedStatement statement = connection.prepareStatement("select * from Review where CourseID = " + courseID );
         ResultSet resultSet = statement.executeQuery();
-        ArrayList<MyReview> myReviews = new ArrayList<>();
+        ArrayList<Review> reviews = new ArrayList<>();
         while (resultSet.next()) {
-            var ReviewText = resultSet.getString(1);
-            var Rating = resultSet.getInt(2);
-            var ReviewTime = resultSet.getTimestamp(3);
-            var CourseNumber = resultSet.getString(4);
-            var Department = resultSet.getString(5);
-            var CourseID = resultSet.getInt(6);
+            var UserID = resultSet.getInt(2);
+            var CourseID = resultSet.getInt(3);
+            var ReviewText = resultSet.getString(4);
+            var Rating = resultSet.getInt(5);
+            var ReviewTime = resultSet.getTimestamp(6);
 
-
-            MyReview myReview = new MyReview(ReviewText, Rating, ReviewTime, CourseNumber, Department, CourseID);
-            myReviews.add(myReview);
+            Review review = new Review(UserID, CourseID, ReviewText, Rating, ReviewTime);
+            reviews.add(review);
         }
-        return myReviews;
+        return reviews;
     }
 
     public int getCourseID(String title) throws SQLException{
