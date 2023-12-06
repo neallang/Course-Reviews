@@ -135,6 +135,7 @@ public class SearchController {
                     try {
                         databaseDriver.connect();
                         setCourseID(databaseDriver.getCourseID(rowData.getTitle()));
+                        databaseDriver.disconnect();
                         currentCourseID.setCourseID(courseID);
                         root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
                         // Switch to the new scene
