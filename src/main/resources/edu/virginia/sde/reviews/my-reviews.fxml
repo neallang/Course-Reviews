@@ -31,9 +31,9 @@
           <TableColumn fx:id="col_department" maxWidth="4000.0" minWidth="-1.0" prefWidth="76.0" text="Subj" />
             <TableColumn fx:id="col_courseNum" prefWidth="50.0" text="#" />
             <TableColumn fx:id="col_rating" prefWidth="61.0" text="Rating" />
-            <TableColumn fx:id="col_comment" prefWidth="223.0" text="Comment" />
-            <TableColumn fx:id="col_date" prefWidth="61.0" sortType="DESCENDING" text="Date" />
-            <TableColumn fx:id="col_courseID" prefWidth="144.0" sortType="DESCENDING" text="Course ID" />
+            <TableColumn fx:id="col_comment" prefWidth="308.0" text="Comment" />
+            <TableColumn fx:id="col_date" prefWidth="83.0" sortType="DESCENDING" text="Date" />
+            <TableColumn fx:id="col_courseID" prefWidth="37.0" sortType="DESCENDING" text="Course ID" />
         </columns>
       </TableView>
       <Button layoutX="6.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
