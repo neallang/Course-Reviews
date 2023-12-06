@@ -297,9 +297,10 @@ public class DatabaseDriver {
             var Department = rs.getString(2);
             var CourseNumber = rs.getString(3);
             var Title = rs.getString(4);
+            var Rating = rs.getDouble(5);
 
 
-            Course course = new Course(Department, CourseNumber, Title);
+            Course course = new Course(Department, CourseNumber, Title, Rating);
 
             foundCourses.add(course);
         }

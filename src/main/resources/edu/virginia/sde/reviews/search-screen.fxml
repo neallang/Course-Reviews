@@ -95,7 +95,7 @@
           <TableColumn fx:id="subjectCol" prefWidth="59.0" text="Subject" />
           <TableColumn fx:id="numCol" prefWidth="75.0" text="Number" />
             <TableColumn fx:id="titleCol" prefWidth="407.0" text="Title" />
-            <TableColumn prefWidth="72.0" text="Rating" />
+            <TableColumn fx:id="ratingCol" prefWidth="72.0" text="Rating" />
         </columns>
       </TableView>
       <Button layoutX="6.0" layoutY="6.0" mnemonicParsing="false" onAction="#switchToLogin" text="Log Out" />

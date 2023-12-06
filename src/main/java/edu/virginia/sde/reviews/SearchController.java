@@ -113,14 +113,8 @@ public class SearchController {
         numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
-//        ArrayList<Double> reviews = new ArrayList<>();
-//        for(Course course: courseArrayList){
-//            int id = databaseDriver.getCourseID(course.getTitle());
-//            double avg = databaseDriver.getAverageReview(id);
-//            reviews.add(avg);
-//        }
-//        ObservableList<Double> observableCourseRatings = FXCollections.observableArrayList(reviews);
-//        ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>());
+        ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>("averageCourseRating"));
+
 
         displayCourses.setItems(observableCourses);
         displayCourses.setRowFactory(tv -> {
@@ -164,6 +158,7 @@ public class SearchController {
         numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
+        ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>("averageCourseRating"));
 
 
         displayCourses.setItems(observableCourses);
