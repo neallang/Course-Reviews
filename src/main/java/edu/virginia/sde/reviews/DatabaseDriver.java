@@ -261,7 +261,7 @@ public class DatabaseDriver {
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
-        System.out.println(department);
+
         String findCourses = "SELECT * FROM Courses WHERE 1=1";
         ArrayList<String> searchFor = new ArrayList<>();
 
@@ -274,8 +274,8 @@ public class DatabaseDriver {
             searchFor.add(courseNumber);
         }
         if(!title.isEmpty()){
-            findCourses += " AND Title = ?";
-            searchFor.add(title);
+            findCourses += " AND Title LIKE ?";
+            searchFor.add("%"+title+"%");
         }
 
         PreparedStatement statement = connection.prepareStatement(findCourses);
@@ -294,8 +294,7 @@ public class DatabaseDriver {
 
 
             Course course = new Course(Department, CourseNumber, Title);
-            System.out.println(course);
-            System.out.println(course.getTitle());
+
             foundCourses.add(course);
         }
 
