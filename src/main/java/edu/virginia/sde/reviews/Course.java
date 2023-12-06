@@ -32,5 +32,5 @@ public class Course {
         return title;
     }
 
-    public double getAverageCourseRating() {return averageCourseRating; }
+    public Double getAverageCourseRating() {return averageCourseRating; }
 }

@@ -8,7 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.When;
 import java.io.File;
 import java.io.IOException;
 
@@ -69,9 +70,6 @@ public class SearchController {
     @FXML
     private Button addButton;
 
-    //MyReviewsController myReviewsController = new MyReviewsController();
-
-
     private User activeUser;
     public void setActiveUser(User user){
         this.activeUser = user;
@@ -113,14 +111,8 @@ public class SearchController {
         numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
-//        ArrayList<Double> reviews = new ArrayList<>();
-//        for(Course course: courseArrayList){
-//            int id = databaseDriver.getCourseID(course.getTitle());
-//            double avg = databaseDriver.getAverageReview(id);
-//            reviews.add(avg);
-//        }
-//        ObservableList<Double> observableCourseRatings = FXCollections.observableArrayList(reviews);
-//        ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>());
+        ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>("averageCourseRating"));
+
 
         displayCourses.setItems(observableCourses);
         displayCourses.setRowFactory(tv -> {
@@ -164,7 +156,7 @@ public class SearchController {
         numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
-
+        ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>("averageCourseRating"));
 
         displayCourses.setItems(observableCourses);
     }
@@ -174,7 +166,11 @@ public class SearchController {
         String inputNum = courseNumAdd.getText();
         String inputTitle = courseTitleAdd.getText();
         Course newCourse = new Course(inputDept, inputNum, inputTitle);
+        databaseDriver.connect();
         databaseDriver.addCourse(newCourse);
+        databaseDriver.commit();
+        databaseDriver.disconnect();
+        initialize();
     }
 
 }
