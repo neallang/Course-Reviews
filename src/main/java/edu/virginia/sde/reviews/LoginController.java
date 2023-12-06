@@ -87,11 +87,16 @@ public class LoginController {
 
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
+
+
         SearchController searchController = new SearchController();
         searchController.setActiveUser(getActiveUser());
 
+
+
         MyReviewsController myReviewsController = new MyReviewsController();
         myReviewsController.setActiveUser(getActiveUser());
+
 
         scene = new Scene(root);
         stage.setTitle("Course Search");
