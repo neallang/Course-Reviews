@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -90,6 +91,7 @@ public class CourseReviewsController {
     @FXML private TableColumn<Review, Integer> ratingColumn;    //rating
     @FXML private TableColumn<Review, String> commentColumn;      //reviewText
     @FXML private TableColumn<Review, Timestamp> dateTimeColumn;     //timeStamp
+    @FXML private Label average_review_double;
     DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
 
     public void initialize() throws IOException, SQLException {
@@ -97,6 +99,7 @@ public class CourseReviewsController {
         int courseID = courseIDSingleton.getCourseID();
         databaseDriver.connect();
         ArrayList<Review> reviewArrayList= databaseDriver.getCourseReviews(courseID);
+        double average = databaseDriver.getAverageReview(courseID);
         databaseDriver.disconnect();
 
         ObservableList<Review> observableReviewList = FXCollections.observableArrayList(reviewArrayList);
@@ -105,6 +108,11 @@ public class CourseReviewsController {
         dateTimeColumn.setCellValueFactory(new PropertyValueFactory<Review, Timestamp>("timeStamp"));
 
         tableView.setItems(observableReviewList);
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        String roundedAverage = df.format(average);
+        average_review_double.setText(roundedAverage);
+
 
 
 
