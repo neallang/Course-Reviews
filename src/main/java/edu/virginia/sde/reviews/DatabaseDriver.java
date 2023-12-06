@@ -257,6 +257,7 @@ public class DatabaseDriver {
     }
 
     public ArrayList<Course> getCoursesBySearch(String department, String courseNumber, String title) throws SQLException{
+
         //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
@@ -266,8 +267,8 @@ public class DatabaseDriver {
         ArrayList<String> searchFor = new ArrayList<>();
 
         if(!department.isEmpty()){
-          findCourses += " AND Department = ?";
-          searchFor.add(department);
+            findCourses += " AND Department = ?";
+            searchFor.add(department);
         }
         if(!courseNumber.isEmpty()){
             findCourses += " AND CourseNumber = ?";
