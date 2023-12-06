@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.sql.SQLException;
 
 
 public class SearchController {
@@ -20,6 +21,16 @@ public class SearchController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    //MyReviewsController myReviewsController = new MyReviewsController();
+
+
+    private User activeUser;
+    public void setActiveUser(User user){
+        this.activeUser = user;
+    }
+    public User getActiveUser(){
+        return this.activeUser;
+    }
 
 
     public void handleCourseIDButton() {
@@ -33,15 +44,20 @@ public class SearchController {
     }
 
 
-    public void switchToMyReviews(javafx.event.ActionEvent actionEvent) throws IOException {
+    public void switchToMyReviews(javafx.event.ActionEvent actionEvent) throws IOException, SQLException {
         root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/my-reviews.fxml").toURI().toURL());
 
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
+//        MyReviewsController myReviewsController = new MyReviewsController();
+//        myReviewsController.populateTable();
+
         scene = new Scene(root);
         stage.setTitle("My Reviews");
         stage.setScene(scene);
+
         stage.show();
+
     }
 
     public void switchToLogin(javafx.event.ActionEvent actionEvent) throws IOException {
