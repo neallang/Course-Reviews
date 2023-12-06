@@ -40,11 +40,13 @@ public class RegisterController {
         username = username_text_box.getText();
         password = password_text_box.getText();
 
-
+        if (username.isEmpty() || password.isEmpty()){
+            blank_label.setText("Either username or password is not set.");
+        }
 
         // Now you can perform the login logic, such as validation or authentication
         // For example, you might check if the username and password are valid
-        if (!ifUserExists()) {
+        else if (!ifUserExists()) {
             databaseDriver.connect();
             User user = new User(username, password);
             databaseDriver.addUser(user);
