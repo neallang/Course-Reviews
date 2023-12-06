@@ -317,6 +317,19 @@ public class DatabaseDriver {
 
     }
 
+    public void deleteReview(int userID, int courseID) throws SQLException{
+        try {
+            double newAverage = getAverageCourseRating(courseID);
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM Reviews where UserID = " + userID + " and CourseID = " + courseID);
+            statement.execute();
+            updateAverageCourseRating(courseID);
+
+        } catch (SQLException e){
+            rollback();
+            throw e;
+        }
+    }
+
     public void updateAverageCourseRating(int courseID) throws SQLException{
         try {
             double newAverage = getAverageCourseRating(courseID);

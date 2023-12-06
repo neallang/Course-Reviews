@@ -105,6 +105,14 @@ class DatabaseDriverTest {
     }
 
     @Test
+    void deleteReview() throws SQLException{
+        databaseDriver.connect();
+        databaseDriver.deleteReview(2,1);
+        databaseDriver.commit();
+        databaseDriver.disconnect();
+    }
+
+    @Test
     void getUserID() throws SQLException{
         databaseDriver.connect();
         int ID = databaseDriver.getUserID("Neal");
