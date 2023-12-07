@@ -111,6 +111,24 @@ public class CourseReviewsController {
         userID = databaseDriver.getUserID(currentUsername.getUsername());
         userReviewAlreadyExists = databaseDriver.userReviewExists(currentUsername.getUsername(), courseID);
         if(userReviewAlreadyExists){
+
+            int userRating = databaseDriver.getUserRating(userID, courseID);
+            if (userRating == 1){
+                button_one.setSelected(true);
+            }
+            else if (userRating == 2){
+                button_two.setSelected(true);
+            }
+            else if (userRating == 3){
+                button_three.setSelected(true);
+            }
+            else if (userRating == 4){
+                button_four.setSelected(true);
+            }
+            else if (userRating == 5){
+                button_five.setSelected(true);
+            }
+
             comment_text_box.setText(databaseDriver.getComment(userID, courseID));
         }
         databaseDriver.disconnect();
