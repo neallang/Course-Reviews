@@ -19,6 +19,7 @@ public class DatabaseDriver {
      * Connect to a SQLite Database. This turns out Foreign Key enforcement, and disables auto-commits
      * @throws SQLException
      */
+    //Got this code from HW5 and from my group's github repository
     public void connect() throws SQLException {
         if (connection != null && !connection.isClosed()) {
             throw new IllegalStateException("The connection is already opened");
@@ -38,6 +39,7 @@ public class DatabaseDriver {
     /**
      * Commit all changes since the connection was opened OR since the last commit/rollback
      */
+    //Got this code from HW5
     public void commit() throws SQLException {
         connection.commit();
     }
@@ -47,6 +49,7 @@ public class DatabaseDriver {
     /**
      * Rollback to the last commit, or when the connection was opened
      */
+    //Got this code from HW5
     public void rollback() throws SQLException {
         connection.rollback();
     }
@@ -54,6 +57,7 @@ public class DatabaseDriver {
     /**
      * Ends the connection to the database
      */
+    //Got this Code from HW5
     public void disconnect() throws SQLException {
         connection.close();
     }
@@ -139,7 +143,7 @@ public class DatabaseDriver {
     }
 
     public ArrayList<User> getAllUsers() throws SQLException {
-        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
+        //Got the code to check for connection closed from HW5 (every time this segment appears it is from the same place)
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
@@ -159,7 +163,6 @@ public class DatabaseDriver {
     }
 
     public ArrayList<User> getUsersByFilter(String column, String value) throws SQLException {
-        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
@@ -252,7 +255,6 @@ public class DatabaseDriver {
     }
 
     public ArrayList<Course> getCoursesByFilter(String column, String value) throws SQLException {
-        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
@@ -274,7 +276,6 @@ public class DatabaseDriver {
     }
 
     public ArrayList<Course> getCoursesBySearch(String department, String courseNumber, String title) throws SQLException{
-
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
@@ -362,6 +363,19 @@ public class DatabaseDriver {
         } catch (SQLException e){
             rollback();
             throw e;
+        }
+    }
+
+    public int getUserRating(int userID, int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT Rating FROM Reviews WHERE CourseID = " + courseID + " AND UserID = " + userID);
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next()){
+            return resultSet.getInt(1);
+        } else {
+            return -1;
         }
     }
 

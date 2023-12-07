@@ -127,6 +127,13 @@ class DatabaseDriverTest {
     }
 
     @Test
+    void getRating() throws SQLException{
+        databaseDriver.connect();
+        System.out.println(databaseDriver.getUserRating(2,1));
+        databaseDriver.disconnect();
+    }
+
+    @Test
     void destroyTables() throws SQLException{
         databaseDriver.connect();
         databaseDriver.clearTables();
