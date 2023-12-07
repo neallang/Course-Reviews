@@ -45,5 +45,5 @@ List the primary contributions of each author. It is recommended to update this 
 * Helped implement switching between screens across controllers
 
 ## Issues
-
+* Username IS CASE SENSITIVE! Not an issue, just clarifying
 * Occasionally, when running the search screen, adding invalid courses repeatedly may stop showing error messages. I'm not sure if this is only on my (Connolly's) computer, but if I close it and reopen it works as intended. We believe this may happen when the "Add Course" button is hit subsequent times too quickly, but because the Button handling is a JavaFX feature, we are not sure how to fix this. This was happening extremely infrequently, but if it does, closing and reopening it or logging in and out should fix it.
