@@ -160,7 +160,7 @@ public class SearchController {
         databaseDriver.disconnect();
     }
     public void searchCourses(javafx.event.ActionEvent actionEvent) throws IOException, SQLException{
-        String inputDept = subjectSearch.getText();
+        String inputDept = subjectSearch.getText().toUpperCase();
         String inputNum = courseNumSearch.getText();
         String inputTitle = courseTitleSearch.getText();
         databaseDriver.connect();
@@ -168,7 +168,7 @@ public class SearchController {
         databaseDriver.disconnect();
 
         ObservableList<Course> observableCourses = FXCollections.observableArrayList(searchedCourses);
-        numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
+        numCol.setCellValueFactory(new PropertyValueFactory<Course, String>(("courseNumber").toUpperCase()));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>("averageCourseRating"));
