@@ -321,6 +321,20 @@ public class DatabaseDriver {
         return foundCourses;
     }
 
+    public String getCourseName(int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT Department, CourseNumber, Title FROM Courses WHERE ID = " + courseID);
+        ResultSet resultSet = statement.executeQuery();
+        String courseName = "";
+        courseName += resultSet.getString(1) + " ";
+        courseName += resultSet.getString(2) + ": ";
+        courseName += resultSet.getString(3);
+        return courseName;
+
+    }
+
 
     public void addReview(Review review) throws SQLException{
         try {
