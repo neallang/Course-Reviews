@@ -9,8 +9,8 @@
 
 ## To Run
 
-Run from the HelloWorldApplication.java class with the VM Argument: <br> --module-path [Path to JavaFX folder] --add-modules javafx.controls,javafx.fxml<br> The path should be in quotes, not brackets. Project preferences should be run on JDK 17.0.9.<br>
-The HelloWorldApplication.java class will open the application with the login screen, as well as create and populate a database with courses, users, and reviews.
+Run from the CourseReviewsApplication.java class with the VM Argument: <br> --module-path [Path to JavaFX folder] --add-modules javafx.controls,javafx.fxml<br> The path should be in quotes, not brackets. Project preferences should be run on JDK 17.0.9.<br>
+The CourseReviewsApplication.java class will open the application with the login screen, as well as create and populate a database with courses, users, and reviews.
 
 ## Contributions
 
