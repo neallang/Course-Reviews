@@ -108,6 +108,21 @@ public class CourseReviewsController {
         userReviewAlreadyExists = databaseDriver.userReviewExists(currentUsername.getUsername(), courseID);
         if(userReviewAlreadyExists){
             comment_text_box.setText(databaseDriver.getComment(userID, courseID));
+//            if (databaseDriver.getCourseReviews(userID) == 1){
+//                button_one.setSelected(true);
+//            }
+//            else if (currentReviewSingleton.getRating() == 2){
+//                button_two.setSelected(true);
+//            }
+//            else if (currentReviewSingleton.getRating() == 3){
+//                button_three.setSelected(true);
+//            }
+//            else if (currentReviewSingleton.getRating() == 4){
+//                button_four.setSelected(true);
+//            }
+//            else if (currentReviewSingleton.getRating() == 5){
+//                button_five.setSelected(true);
+//            }
         }
         databaseDriver.disconnect();
 
@@ -128,16 +143,17 @@ public class CourseReviewsController {
 
 
     public void save(javafx.event.ActionEvent actionEvent) throws SQLException, IOException, InterruptedException {
+        currentReviewSingleton.setRating(rating);
 
         String comment = comment_text_box.getText();
         timestamp = new Timestamp(java.lang.System.currentTimeMillis());
         databaseDriver.connect();
-        if(userReviewAlreadyExists){
-            databaseDriver.updateReview(comment, rating, userID, courseID);
+        if(userReviewAlreadyExists && currentReviewSingleton.getRating() != -1){
+            databaseDriver.updateReview(comment,currentReviewSingleton.getRating(), userID, courseID);
             databaseDriver.commit();
             databaseDriver.disconnect();
-        } else {
-            Review review = new Review(userID, courseID, comment, rating, timestamp);
+        } else if (!userReviewAlreadyExists && currentReviewSingleton.getRating() != -1) {
+            Review review = new Review(userID, courseID, comment, currentReviewSingleton.getRating(), timestamp);
             databaseDriver.addReview(review);
             databaseDriver.commit();
             databaseDriver.disconnect();
