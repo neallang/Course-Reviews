@@ -181,6 +181,10 @@ public class SearchController {
         String inputDept = subjectAdd.getText();
         String inputNum = courseNumAdd.getText();
         String inputTitle = courseTitleAdd.getText();
+        if(inputTitle.contains("'")){
+            inputTitle = convertSingleQuotes(inputTitle);
+        }
+        System.out.println(inputTitle);
         Course newCourse = new Course(inputDept, inputNum, inputTitle);
         databaseDriver.connect();
         if(databaseDriver.courseAlreadyExists(inputDept, inputTitle)){
@@ -212,6 +216,26 @@ public class SearchController {
             }
         }
         return true;
+    }
+
+
+    public String convertSingleQuotes(String string){
+        ArrayList<Integer> indexList = new ArrayList<>();
+        int index = string.indexOf("'");
+        while (index >= 0) {
+            indexList.add(index);
+            index = string.indexOf("'", index + 1);
+        }
+        String returnString = "";
+        int currentIndex = 0;
+        int lastIndex = 0;
+        for(int i : indexList){
+            returnString += string.substring(currentIndex,i) + "'";
+            currentIndex = i;
+            lastIndex = i;
+        }
+        returnString += string.substring(lastIndex);
+        return  returnString;
     }
 
 }
