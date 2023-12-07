@@ -366,6 +366,19 @@ public class DatabaseDriver {
         }
     }
 
+    public int getUserRating(int userID, int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT Rating FROM Reviews WHERE CourseID = " + courseID + " AND UserID = " + userID);
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next()){
+            return resultSet.getInt(1);
+        } else {
+            return -1;
+        }
+    }
+
     public boolean checkReviewsExist(int courseID) throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
