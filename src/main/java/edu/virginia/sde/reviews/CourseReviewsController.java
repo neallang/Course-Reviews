@@ -34,7 +34,6 @@ public class CourseReviewsController {
     private RadioButton button_one, button_two, button_three, button_four, button_five;
     private Timestamp timestamp;
     private int courseID;
-    private int userRating;
 
     private int userID;
     private boolean userReviewAlreadyExists;
@@ -113,7 +112,7 @@ public class CourseReviewsController {
         userReviewAlreadyExists = databaseDriver.userReviewExists(currentUsername.getUsername(), courseID);
         if(userReviewAlreadyExists){
 
-            userRating = databaseDriver.getUserRating(userID, courseID);
+            int userRating = databaseDriver.getUserRating(userID, courseID);
             if (userRating == 1){
                 button_one.setSelected(true);
             }
@@ -155,14 +154,19 @@ public class CourseReviewsController {
         String comment = comment_text_box.getText();
         timestamp = new Timestamp(java.lang.System.currentTimeMillis());
         databaseDriver.connect();
-        if(userReviewAlreadyExists && rating != -1){
+        if(rating == -1){
+            messageLabel.setText("Please provide a rating.");
+            databaseDriver.disconnect();
+        } else if(userReviewAlreadyExists){
             databaseDriver.updateReview(comment, rating, userID, courseID);
             databaseDriver.commit();
+            messageLabel.setText("");
             databaseDriver.disconnect();
-        } else if (!userReviewAlreadyExists && rating != -1){
+        } else {
             Review review = new Review(userID, courseID, comment, rating, timestamp);
             databaseDriver.addReview(review);
             databaseDriver.commit();
+            messageLabel.setText("");
             databaseDriver.disconnect();
         }
 
