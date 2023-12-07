@@ -120,9 +120,9 @@
             <TextField fx:id="courseTitleAdd" promptText="Title" GridPane.columnIndex="3" />
             <Button fx:id="addButton" mnemonicParsing="false" onAction="#addCourseInSearch" prefHeight="26.0" prefWidth="84.0" text="Add Course" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add New Course:" wrappingWidth="100.20849609375" GridPane.halignment="CENTER" />
-            <Label id="courseExistsLabel" fx:id="courseExistsLabel" prefHeight="2.0" prefWidth="158.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+            <Label id="courseExistsLabel" fx:id="courseExistsLabel" prefHeight="14.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                <font>
-                  <Font size="8.0" />
+                  <Font size="11.0" />
                </font>
             </Label>
          </children>

@@ -120,6 +120,13 @@ class DatabaseDriverTest {
     }
 
     @Test
+    void getName() throws SQLException{
+        databaseDriver.connect();
+        System.out.println(databaseDriver.getCourseName(1));
+        databaseDriver.disconnect();
+    }
+
+    @Test
     void destroyTables() throws SQLException{
         databaseDriver.connect();
         databaseDriver.clearTables();

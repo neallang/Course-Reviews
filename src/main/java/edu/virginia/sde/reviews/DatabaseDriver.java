@@ -209,7 +209,7 @@ public class DatabaseDriver {
     public void addCourse(Course course) throws SQLException{
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Courses(Department, CourseNumber, Title, AverageCourseRating) values (?, ?, ?, ?)");
-            statement.setString(1, course.getDepartment());
+            statement.setString(1, (course.getDepartment()).toUpperCase());
             statement.setString(2, course.getCourseNumber());
             statement.setString(3, course.getTitle());
             statement.setDouble(4, course.getAverageCourseRating());
@@ -229,6 +229,7 @@ public class DatabaseDriver {
         ResultSet resultSet = statement.executeQuery();
         return resultSet.next();
    }
+
 
     public ArrayList<Course> getAllCourses() throws SQLException{
         if (connection.isClosed()){
@@ -274,7 +275,6 @@ public class DatabaseDriver {
 
     public ArrayList<Course> getCoursesBySearch(String department, String courseNumber, String title) throws SQLException{
 
-        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
@@ -320,6 +320,20 @@ public class DatabaseDriver {
         return foundCourses;
     }
 
+    public String getCourseName(int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT Department, CourseNumber, Title FROM Courses WHERE ID = " + courseID);
+        ResultSet resultSet = statement.executeQuery();
+        String courseName = "";
+        courseName += resultSet.getString(1) + " ";
+        courseName += resultSet.getString(2) + ": ";
+        courseName += resultSet.getString(3);
+        return courseName;
+
+    }
+
 
     public void addReview(Review review) throws SQLException{
         try {
@@ -341,7 +355,6 @@ public class DatabaseDriver {
 
     public void deleteReview(int userID, int courseID) throws SQLException{
         try {
-            double newAverage = getAverageCourseRating(courseID);
             PreparedStatement statement = connection.prepareStatement("DELETE FROM Reviews where UserID = " + userID + " and CourseID = " + courseID);
             statement.execute();
             updateAverageCourseRating(courseID);
@@ -350,6 +363,15 @@ public class DatabaseDriver {
             rollback();
             throw e;
         }
+    }
+
+    public boolean checkReviewsExist(int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Reviews WHERE CourseID = " + courseID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet.next();
     }
 
     public void updateReview(String comment, int rating, int userID, int courseID) throws SQLException {
@@ -387,7 +409,13 @@ public class DatabaseDriver {
 
     public void updateAverageCourseRating(int courseID) throws SQLException{
         try {
-            double newAverage = getAverageCourseRating(courseID);
+            double newAverage;
+            if(checkReviewsExist(courseID)){
+                 newAverage = getAverageCourseRating(courseID);
+            } else {
+                newAverage = 0.0;
+            }
+
             PreparedStatement statement = connection.prepareStatement("UPDATE Courses SET AverageCourseRating = " + newAverage + " WHERE ID = " + courseID);
             statement.execute();
 

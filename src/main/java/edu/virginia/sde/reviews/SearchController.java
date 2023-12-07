@@ -109,6 +109,8 @@ public class SearchController {
     public void initialize() throws IOException, SQLException{
         databaseDriver.connect();
         ArrayList<Course> courseArrayList = databaseDriver.getAllCourses();
+        // Reference for populating table:
+        // https://stackoverflow.com/questions/11180884/how-to-populate-a-tableview-that-is-defined-in-an-fxml-file-that-is-designed-in
         ObservableList<Course> observableCourses = FXCollections.observableArrayList(courseArrayList);
         numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
@@ -160,13 +162,12 @@ public class SearchController {
         databaseDriver.disconnect();
     }
     public void searchCourses(javafx.event.ActionEvent actionEvent) throws IOException, SQLException{
-        String inputDept = subjectSearch.getText();
+        String inputDept = subjectSearch.getText().toUpperCase();
         String inputNum = courseNumSearch.getText();
         String inputTitle = courseTitleSearch.getText();
         databaseDriver.connect();
         ArrayList<Course> searchedCourses = new ArrayList<>(databaseDriver.getCoursesBySearch(inputDept,inputNum,inputTitle));
         databaseDriver.disconnect();
-
         ObservableList<Course> observableCourses = FXCollections.observableArrayList(searchedCourses);
         numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
@@ -184,6 +185,14 @@ public class SearchController {
         databaseDriver.connect();
         if(databaseDriver.courseAlreadyExists(inputDept, inputTitle)){
             courseExistsLabel.setText("Course already exists.");
+        } else if(inputDept.isEmpty() || inputNum.isEmpty() || inputTitle.isEmpty()) {
+            courseExistsLabel.setText("Please complete all fields for course name.");
+        }else if(inputDept.length() > 4 || inputDept.length() < 2){
+            courseExistsLabel.setText("Please input valid department mnemonic.");
+        }else if(inputNum.length() != 4 || !isDigits(inputNum)) {
+            courseExistsLabel.setText("Please input valid course number.");
+        }else if(inputTitle.length()>50){
+            courseExistsLabel.setText("Course title must be 50 characters or less.");
         } else {
             databaseDriver.addCourse(newCourse);
             databaseDriver.commit();
@@ -193,6 +202,16 @@ public class SearchController {
 
         databaseDriver.disconnect();
         initialize();
+    }
+
+    public boolean isDigits(String courseNum){
+        // used isDigit function https://www.geeksforgeeks.org/character-isdigit-method-in-java-with-examples/
+        for(int i = 0; i<courseNum.length(); i++){
+            if(!Character.isDigit(courseNum.charAt(i))){
+                return false;
+            }
+        }
+        return true;
     }
 
 }
