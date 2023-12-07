@@ -30,6 +30,9 @@ public class RegisterController {
     @FXML
     private TextField username_text_box;
 
+    @FXML
+    Label passwordValidationLabel;
+
     protected String username;
     protected String password;
 
@@ -40,10 +43,14 @@ public class RegisterController {
         username = username_text_box.getText();
         password = password_text_box.getText();
 
+        if (password.length() < 8){
+            passwordValidationLabel.setText("Password must be at least 8 characters long.");
+        }
         if (username.isEmpty() || password.isEmpty()){
             blank_label.setText("Either username or password is not set.");
+        } else if (ifUserExists()){
+            blank_label.setText("Username is already taken.");
         }
-
         // Now you can perform the login logic, such as validation or authentication
         // For example, you might check if the username and password are valid
         else if (!ifUserExists()) {
@@ -51,6 +58,7 @@ public class RegisterController {
             User user = new User(username, password);
             databaseDriver.addUser(user);
             databaseDriver.commit();
+            passwordValidationLabel.setText("");
             databaseDriver.disconnect();
             switchToLogin(event);
         } else {

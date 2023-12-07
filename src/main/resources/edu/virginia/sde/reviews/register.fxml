@@ -23,5 +23,10 @@
       <Button fx:id="register_button" layoutX="293.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleRegister" text="Register" />
       <Button fx:id="back_to_login" layoutX="195.0" layoutY="298.0" mnemonicParsing="false" onAction="#switchToLogin" text="Back To Login" />
       <PasswordField fx:id="password_text_box" layoutX="195.0" layoutY="220.0" />
+      <Label fx:id="passwordValidationLabel" layoutX="195.0" layoutY="246.0">
+         <font>
+            <Font size="8.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
