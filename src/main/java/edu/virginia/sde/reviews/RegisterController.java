@@ -42,13 +42,15 @@ public class RegisterController {
         // Capture the username and password when the login button is clicked
         username = username_text_box.getText();
         password = password_text_box.getText();
+        passwordValidationLabel.setText("");
+        blank_label.setText("");
 
         if (password.length() < 8){
             passwordValidationLabel.setText("Password must be at least 8 characters long.");
         }
         if (username.isEmpty() || password.isEmpty()){
             blank_label.setText("Either username or password is not set.");
-        } else if (ifUserExists()){
+        } else if (ifUserExists() || password.length() < 8){
             blank_label.setText("Username is already taken.");
         }
         // Now you can perform the login logic, such as validation or authentication
