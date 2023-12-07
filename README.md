@@ -9,7 +9,8 @@
 
 ## To Run
 
-[Add a brief description of which .java file to run, and what vm arguments are needed]
+Run from the HelloWorldApplication.java class with the VM Argument: <br> --module-path [Path to JavaFX folder] --add-modules javafx.controls,javafx.fxml<br> The path should be in quotes, not brackets. Project preferences should be run on JDK 17.0.9.<br>
+The HelloWorldApplication.java class will open the application with the login screen, as well as create and populate a database with courses, users, and reviews.
 
 ## Contributions
 
@@ -45,4 +46,4 @@ List the primary contributions of each author. It is recommended to update this 
 
 ## Issues
 
-* Occasionally, when running the search screen, adding invalid courses repeatedly may stop showing error messages. I'm not sure if this is only on my (Connolly's) computer, but if I close it and reopen it works as intended. This was happening extremely infrequently, but if it does, closing and reopening it or logging in and out should fix it.
+* Occasionally, when running the search screen, adding invalid courses repeatedly may stop showing error messages. I'm not sure if this is only on my (Connolly's) computer, but if I close it and reopen it works as intended. We believe this may happen when the "Add Course" button is hit subsequent times too quickly, but because the Button handling is a JavaFX feature, we are not sure how to fix this. This was happening extremely infrequently, but if it does, closing and reopening it or logging in and out should fix it.
