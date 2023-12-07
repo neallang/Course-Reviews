@@ -9,8 +9,8 @@
 
 ## To Run
 
-Run from the HelloWorldApplication.java class with the VM Argument: <br> --module-path [Path to JavaFX folder] --add-modules javafx.controls,javafx.fxml<br> The path should be in quotes, not brackets. Project preferences should be run on JDK 17.0.9.<br>
-The HelloWorldApplication.java class will open the application with the login screen, as well as create and populate a database with courses, users, and reviews.
+Run from the CourseReviewsApplication.java class with the VM Argument: <br> --module-path [Path to JavaFX folder] --add-modules javafx.controls,javafx.fxml<br> The path should be in quotes, not brackets. Project preferences should be run on JDK 17.0.9.<br>
+The CourseReviewsApplication.java class will open the application with the login screen, as well as create and populate a database with courses, users, and reviews.
 
 ## Contributions
 
@@ -18,7 +18,6 @@ List the primary contributions of each author. It is recommended to update this 
 
 ### [Author 1 - Neal Langhorne]
 
-* Implemented singleton patterns: CourseIDSingleton, CurrentReviewSingleton, UserNameSingleton classes
 * Implemented MyReviewsController, SceneController classes
 * Created and implemented initialize() method in CourseReviewsController class
 * Helped implement switching between screens across controllers
@@ -32,6 +31,7 @@ List the primary contributions of each author. It is recommended to update this 
 ### [Author 3 - Stanley Inouye]
 
 * Created Login.fxml file
+* Implemented singleton patterns: CourseIDSingleton, CurrentReviewSingleton, UserNameSingleton classes
 * Created databaseDriver and all subsequent methods and functionality (Creating and updating datatables, finding average course ratings, manipulating course reviews, and userIds)
 * Created Course, Review, MyReview and User classes to instantiate and handle all related data
 * Implemented save() and delete() methods in CourseReviewsController class
