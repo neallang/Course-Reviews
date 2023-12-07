@@ -115,18 +115,23 @@ public class CourseReviewsController {
             int userRating = databaseDriver.getUserRating(userID, courseID);
             if (userRating == 1){
                 button_one.setSelected(true);
+                rating = 1;
             }
             else if (userRating == 2){
                 button_two.setSelected(true);
+                rating = 2;
             }
             else if (userRating == 3){
                 button_three.setSelected(true);
+                rating = 3;
             }
             else if (userRating == 4){
                 button_four.setSelected(true);
+                rating = 4;
             }
             else if (userRating == 5){
                 button_five.setSelected(true);
+                rating = 5;
             }
 
             comment_text_box.setText(databaseDriver.getComment(userID, courseID));
