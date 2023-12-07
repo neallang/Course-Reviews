@@ -341,7 +341,6 @@ public class DatabaseDriver {
 
     public void deleteReview(int userID, int courseID) throws SQLException{
         try {
-            double newAverage = getAverageCourseRating(courseID);
             PreparedStatement statement = connection.prepareStatement("DELETE FROM Reviews where UserID = " + userID + " and CourseID = " + courseID);
             statement.execute();
             updateAverageCourseRating(courseID);
@@ -350,6 +349,15 @@ public class DatabaseDriver {
             rollback();
             throw e;
         }
+    }
+
+    public boolean checkReviewsExist(int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Reviews WHERE CourseID = " + courseID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet.next();
     }
 
     public void updateReview(String comment, int rating, int userID, int courseID) throws SQLException {
@@ -387,7 +395,13 @@ public class DatabaseDriver {
 
     public void updateAverageCourseRating(int courseID) throws SQLException{
         try {
-            double newAverage = getAverageCourseRating(courseID);
+            double newAverage;
+            if(checkReviewsExist(courseID)){
+                 newAverage = getAverageCourseRating(courseID);
+            } else {
+                newAverage = 0.0;
+            }
+
             PreparedStatement statement = connection.prepareStatement("UPDATE Courses SET AverageCourseRating = " + newAverage + " WHERE ID = " + courseID);
             statement.execute();
 
