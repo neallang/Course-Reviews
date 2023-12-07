@@ -141,6 +141,9 @@ public class CourseReviewsController {
 
         tableView.setItems(observableReviewList);
 
+
+        //AI Agent: CHATGPT
+        //Prompt: How can I round a double to 2 decimal places in Java?
         DecimalFormat df = new DecimalFormat("#.##");
         String roundedAverage = df.format(average);
         average_review_double.setText(roundedAverage);
@@ -151,21 +154,19 @@ public class CourseReviewsController {
 
 
     public void save(javafx.event.ActionEvent actionEvent) throws SQLException, IOException {
-
         String comment = comment_text_box.getText();
         timestamp = new Timestamp(java.lang.System.currentTimeMillis());
         databaseDriver.connect();
         if(userReviewAlreadyExists && rating != -1){
             databaseDriver.updateReview(comment, rating, userID, courseID);
             databaseDriver.commit();
-            databaseDriver.disconnect();
         } else if (!userReviewAlreadyExists && rating != -1){
             Review review = new Review(userID, courseID, comment, rating, timestamp);
             databaseDriver.addReview(review);
             databaseDriver.commit();
-            databaseDriver.disconnect();
         }
 
+        databaseDriver.disconnect();
 
         initialize();
 
