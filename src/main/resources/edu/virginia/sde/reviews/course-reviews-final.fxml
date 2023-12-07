@@ -40,7 +40,7 @@
             <Label fx:id="rating_label" text="Rating (Required)" GridPane.halignment="CENTER" />
             <Label fx:id="comment_label" text="Comment (Optional)" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
             <TextField fx:id="comment_text_box" onAction="#setComment" prefHeight="66.0" prefWidth="315.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button fx:id="save_button" mnemonicParsing="false" text="Save" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="save_button" mnemonicParsing="false" onAction="#save" text="Save" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button fx:id="delete_button" mnemonicParsing="false" text="Delete" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <GridPane GridPane.rowIndex="1">
               <columnConstraints>

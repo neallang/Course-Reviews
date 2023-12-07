@@ -127,6 +127,42 @@ public class CourseReviewsController {
 
     }
 
+    public void save(javafx.event.ActionEvent actionEvent) throws SQLException {
+        try {
+            databaseDriver.connect();
+
+            // Get the user ID for the current username
+            int userID = databaseDriver.getUserID(currentUsername.getUsername());
+
+            // Set the comment and rating
+            setComment();
+            CurrentReviewSingleton.getInstance().setComment(this.comment);
+            CurrentReviewSingleton.getInstance().setRating(rating);
+
+            // Get the course ID from the singleton
+            int courseID = CourseIDSingleton.getInstance().getCourseID();
+
+            // Create a new Review object
+            timestamp = new Timestamp(System.currentTimeMillis());
+            Review review = new Review(userID, courseID, currentReviewSingleton.getComment(), currentReviewSingleton.getRating(), timestamp);
+
+            // Add the review to the database
+            databaseDriver.addReview(review);
+
+            // Commit the changes
+            databaseDriver.commit();
+
+            // Disconnect from the database
+            databaseDriver.disconnect();
+
+            // Optionally, you can reinitialize the controller to refresh the UI with the new data
+            initialize();
+        } catch (SQLException | IOException e) {
+            // Handle SQLException appropriately (e.g., log or display an error message)
+            e.printStackTrace();
+        }
+    }
+
 
 //    public void save(javafx.event.ActionEvent actionEvent) throws SQLException {
 //        databaseDriver.connect();
@@ -148,13 +184,13 @@ public class CourseReviewsController {
 //
 //    }
 //
-//    public void addReview(Review review) throws SQLException {
-//
-//        databaseDriver.addReview(review);
-//        databaseDriver.commit();
-//        databaseDriver.disconnect();
-//        //initialize();
-//    }
+    public void addReview(Review review) throws SQLException {
+
+        databaseDriver.addReview(review);
+        databaseDriver.commit();
+        databaseDriver.disconnect();
+        //initialize();
+    }
 
 
     }
