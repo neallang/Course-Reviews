@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.scene.text.Text;
+
 
 import javafx.event.ActionEvent;
 
@@ -38,6 +40,7 @@ public class CourseReviewsController {
     UsernameSingleton currentUsername = UsernameSingleton.getInstance();
     int rating = -1;
     String comment;
+    @FXML Label course_title_label;
     CurrentReviewSingleton currentReviewSingleton = CurrentReviewSingleton.getInstance();
     @FXML TextField comment_text_box;
     @FXML Label null_rating_label;
@@ -102,6 +105,7 @@ public class CourseReviewsController {
         CourseIDSingleton courseIDSingleton = CourseIDSingleton.getInstance();
         courseID = courseIDSingleton.getCourseID();
         databaseDriver.connect();
+        course_title_label.setText(databaseDriver.getCourseName(courseID));
         ArrayList<Review> reviewArrayList= databaseDriver.getCourseReviews(courseID);
         double average = databaseDriver.getAverageCourseRating(courseID);
         userID = databaseDriver.getUserID(currentUsername.getUsername());
