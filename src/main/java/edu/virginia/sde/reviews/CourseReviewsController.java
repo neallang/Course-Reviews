@@ -154,14 +154,19 @@ public class CourseReviewsController {
         String comment = comment_text_box.getText();
         timestamp = new Timestamp(java.lang.System.currentTimeMillis());
         databaseDriver.connect();
-        if(userReviewAlreadyExists){
+        if(rating == -1){
+            messageLabel.setText("Please provide a rating.");
+            databaseDriver.disconnect();
+        } else if(userReviewAlreadyExists){
             databaseDriver.updateReview(comment, rating, userID, courseID);
             databaseDriver.commit();
+            messageLabel.setText("");
             databaseDriver.disconnect();
         } else {
             Review review = new Review(userID, courseID, comment, rating, timestamp);
             databaseDriver.addReview(review);
             databaseDriver.commit();
+            messageLabel.setText("");
             databaseDriver.disconnect();
         }
 
