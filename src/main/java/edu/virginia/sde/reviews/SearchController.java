@@ -205,6 +205,7 @@ public class SearchController {
     }
 
     public boolean isDigits(String courseNum){
+        // used isDigit function https://www.geeksforgeeks.org/character-isdigit-method-in-java-with-examples/
         for(int i = 0; i<courseNum.length(); i++){
             if(!Character.isDigit(courseNum.charAt(i))){
                 return false;
