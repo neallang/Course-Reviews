@@ -127,7 +127,7 @@ public class CourseReviewsController {
 
 
 
-    public void save(javafx.event.ActionEvent actionEvent) throws SQLException, IOException, InterruptedException {
+    public void save(javafx.event.ActionEvent actionEvent) throws SQLException, IOException {
 
         String comment = comment_text_box.getText();
         timestamp = new Timestamp(java.lang.System.currentTimeMillis());
@@ -147,6 +147,17 @@ public class CourseReviewsController {
         initialize();
 
 
+    }
+
+    public void delete(javafx.event.ActionEvent actionEvent) throws SQLException, IOException{
+        databaseDriver.connect();
+        if(userReviewAlreadyExists){
+            databaseDriver.deleteReview(userID, courseID);
+            databaseDriver.commit();
+
+        }
+        databaseDriver.disconnect();
+        initialize();
     }
 
 
