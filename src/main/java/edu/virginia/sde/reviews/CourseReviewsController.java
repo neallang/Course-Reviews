@@ -140,6 +140,8 @@ public class CourseReviewsController {
 
         tableView.setItems(observableReviewList);
 
+        //AI Agent: CHATGPT
+        //Prompt: How can I round a double to 2 decimal places in Java?
         DecimalFormat df = new DecimalFormat("#.##");
         String roundedAverage = df.format(average);
         average_review_double.setText(roundedAverage);

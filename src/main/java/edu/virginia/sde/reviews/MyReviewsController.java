@@ -125,6 +125,8 @@ public class MyReviewsController {
 
         myReviews.setItems(observableReviews);
 
+        //AI Agent: ChatGPT
+        //Prompt: How can I make clickable rows?
         myReviews.setRowFactory(tv -> {
             TableRow<MyReview> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -134,7 +136,6 @@ public class MyReviewsController {
                     currentCourseID.setCourseID(courseID);
                     try {
                         root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
-                        // Switch to the new scene
                         Stage stage = (Stage) myReviews.getScene().getWindow();
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
@@ -142,7 +143,6 @@ public class MyReviewsController {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    // Perform actions based on the clicked courseID or rowData
                 }
             });
             return row;
