@@ -168,7 +168,7 @@ public class SearchController {
         databaseDriver.disconnect();
 
         ObservableList<Course> observableCourses = FXCollections.observableArrayList(searchedCourses);
-        numCol.setCellValueFactory(new PropertyValueFactory<Course, String>(("courseNumber").toUpperCase()));
+        numCol.setCellValueFactory(new PropertyValueFactory<Course, String>("courseNumber"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Course, String>("department"));
         titleCol.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<Course, Double>("averageCourseRating"));
@@ -184,6 +184,8 @@ public class SearchController {
         databaseDriver.connect();
         if(databaseDriver.courseAlreadyExists(inputDept, inputTitle)){
             courseExistsLabel.setText("Course already exists.");
+        } else if(inputDept.isEmpty() || inputNum.isEmpty() || inputTitle.isEmpty()){
+            courseExistsLabel.setText("Please complete all fields for course name.");
         } else {
             databaseDriver.addCourse(newCourse);
             databaseDriver.commit();

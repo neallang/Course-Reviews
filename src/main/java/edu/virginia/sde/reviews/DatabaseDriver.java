@@ -209,7 +209,7 @@ public class DatabaseDriver {
     public void addCourse(Course course) throws SQLException{
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Courses(Department, CourseNumber, Title, AverageCourseRating) values (?, ?, ?, ?)");
-            statement.setString(1, course.getDepartment());
+            statement.setString(1, (course.getDepartment()).toUpperCase());
             statement.setString(2, course.getCourseNumber());
             statement.setString(3, course.getTitle());
             statement.setDouble(4, course.getAverageCourseRating());
@@ -229,6 +229,7 @@ public class DatabaseDriver {
         ResultSet resultSet = statement.executeQuery();
         return resultSet.next();
    }
+
 
     public ArrayList<Course> getAllCourses() throws SQLException{
         if (connection.isClosed()){
