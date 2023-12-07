@@ -3,6 +3,7 @@ package edu.virginia.sde.reviews;
 import javax.xml.transform.Result;
 import java.lang.module.Configuration;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class DatabaseDriver {
@@ -40,6 +41,8 @@ public class DatabaseDriver {
     public void commit() throws SQLException {
         connection.commit();
     }
+
+
 
     /**
      * Rollback to the last commit, or when the connection was opened
@@ -218,6 +221,15 @@ public class DatabaseDriver {
 
     }
 
+    public boolean courseAlreadyExists(String department, String title) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM Courses WHERE Department = " + "\'" + department + "\'" + " AND Title = " + "\'" + title + "\'");
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.next();
+   }
+
     public ArrayList<Course> getAllCourses() throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
@@ -297,9 +309,10 @@ public class DatabaseDriver {
             var Department = rs.getString(2);
             var CourseNumber = rs.getString(3);
             var Title = rs.getString(4);
+            var Rating = rs.getDouble(5);
 
 
-            Course course = new Course(Department, CourseNumber, Title);
+            Course course = new Course(Department, CourseNumber, Title, Rating);
 
             foundCourses.add(course);
         }
@@ -337,6 +350,27 @@ public class DatabaseDriver {
             rollback();
             throw e;
         }
+    }
+
+    public void updateReview(String comment, int rating, int userID, int courseID) throws SQLException {
+        try {
+            PreparedStatement statement = connection.prepareStatement("UPDATE Reviews SET ReviewText = " + "\'" + comment + "\'" + ", Rating = " + rating + " WHERE UserID = " + userID + " AND CourseID = " + courseID);
+            statement.execute();
+            updateAverageCourseRating(courseID);
+
+        } catch (SQLException e){
+            rollback();
+            throw e;
+        }
+    }
+
+    public String getComment(int userID, int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT ReviewText FROM Reviews WHERE UserID = " + userID + " AND CourseID = " + courseID);
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.getString(1);
     }
 
     public boolean userReviewExists(String username, int courseID) throws SQLException{
