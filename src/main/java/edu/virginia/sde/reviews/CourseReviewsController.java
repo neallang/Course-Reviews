@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.scene.text.Text;
+
 
 import javafx.event.ActionEvent;
 
@@ -38,6 +40,7 @@ public class CourseReviewsController {
     UsernameSingleton currentUsername = UsernameSingleton.getInstance();
     int rating = -1;
     String comment;
+    @FXML Label course_title_label;
     CurrentReviewSingleton currentReviewSingleton = CurrentReviewSingleton.getInstance();
     @FXML TextField comment_text_box;
     @FXML Label null_rating_label;
@@ -102,11 +105,30 @@ public class CourseReviewsController {
         CourseIDSingleton courseIDSingleton = CourseIDSingleton.getInstance();
         courseID = courseIDSingleton.getCourseID();
         databaseDriver.connect();
+        course_title_label.setText(databaseDriver.getCourseName(courseID));
         ArrayList<Review> reviewArrayList= databaseDriver.getCourseReviews(courseID);
         double average = databaseDriver.getAverageCourseRating(courseID);
         userID = databaseDriver.getUserID(currentUsername.getUsername());
         userReviewAlreadyExists = databaseDriver.userReviewExists(currentUsername.getUsername(), courseID);
         if(userReviewAlreadyExists){
+
+            int userRating = databaseDriver.getUserRating(userID, courseID);
+            if (userRating == 1){
+                button_one.setSelected(true);
+            }
+            else if (userRating == 2){
+                button_two.setSelected(true);
+            }
+            else if (userRating == 3){
+                button_three.setSelected(true);
+            }
+            else if (userRating == 4){
+                button_four.setSelected(true);
+            }
+            else if (userRating == 5){
+                button_five.setSelected(true);
+            }
+
             comment_text_box.setText(databaseDriver.getComment(userID, courseID));
         }
         databaseDriver.disconnect();

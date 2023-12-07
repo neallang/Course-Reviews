@@ -1,5 +1,6 @@
 package edu.virginia.sde.reviews;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
 import java.awt.*;
 import java.io.File;
@@ -27,6 +29,8 @@ public class LoginController {
 
     @FXML
     private TextField username_text_box;
+
+    @FXML Button close_button;
 
     private String username;
 
@@ -112,6 +116,13 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
+
+    @FXML
+    void handleCloseButton(ActionEvent event) {
+        // Close the application when the close button is pressed
+        Platform.exit();
+    }
+
 
 
 }

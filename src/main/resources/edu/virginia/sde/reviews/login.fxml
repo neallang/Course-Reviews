@@ -31,5 +31,6 @@
       <Button fx:id="register_button" layoutX="192.0" layoutY="254.0" mnemonicParsing="false" onAction="#switchToRegister" text="Register" />
       <Button fx:id="login_button" layoutX="361.0" layoutY="254.0" mnemonicParsing="false" onAction="#handleLogin" text="Login" />
       <Label layoutX="192.0" layoutY="230.0" text="Not a registered user?" />
+        <Button fx:id="close_button" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCloseButton" text="Close" />
     </children>
 </AnchorPane>
