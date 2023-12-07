@@ -184,7 +184,6 @@ public class SearchController {
         if(inputTitle.contains("'")){
             inputTitle = convertSingleQuotes(inputTitle);
         }
-        System.out.println(inputTitle);
         Course newCourse = new Course(inputDept, inputNum, inputTitle);
         databaseDriver.connect();
         if(databaseDriver.courseAlreadyExists(inputDept, inputTitle)){
