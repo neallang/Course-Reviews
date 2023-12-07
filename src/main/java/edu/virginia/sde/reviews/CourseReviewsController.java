@@ -47,6 +47,7 @@ public class CourseReviewsController {
     @FXML private TableColumn<Review, String> commentColumn;      //reviewText
     @FXML private TableColumn<Review, Timestamp> dateTimeColumn;     //timeStamp
     @FXML private Label average_review_double;
+    @FXML private Label messageLabel;
     DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
 
 
@@ -104,7 +105,10 @@ public class CourseReviewsController {
         ArrayList<Review> reviewArrayList= databaseDriver.getCourseReviews(courseID);
         double average = databaseDriver.getAverageCourseRating(courseID);
         userID = databaseDriver.getUserID(currentUsername.getUsername());
-        userReviewAlreadyExists = databaseDriver.userAlreadyExists(currentUsername.getUsername());
+        userReviewAlreadyExists = databaseDriver.userReviewExists(currentUsername.getUsername(), courseID);
+        if(userReviewAlreadyExists){
+            comment_text_box.setText(databaseDriver.getComment(userID, courseID));
+        }
         databaseDriver.disconnect();
 
         ObservableList<Review> observableReviewList = FXCollections.observableArrayList(reviewArrayList);
@@ -127,24 +131,23 @@ public class CourseReviewsController {
 
         String comment = comment_text_box.getText();
         timestamp = new Timestamp(java.lang.System.currentTimeMillis());
-        Review review = new Review(userID, courseID, comment, rating, timestamp);
         databaseDriver.connect();
-        databaseDriver.addReview(review);
-        //TimeUnit.SECONDS.sleep(5);
-        databaseDriver.commit();
-        databaseDriver.disconnect();
+        if(userReviewAlreadyExists){
+            databaseDriver.updateReview(comment, rating, userID, courseID);
+            databaseDriver.commit();
+            databaseDriver.disconnect();
+        } else {
+            Review review = new Review(userID, courseID, comment, rating, timestamp);
+            databaseDriver.addReview(review);
+            databaseDriver.commit();
+            databaseDriver.disconnect();
+        }
+
+
         initialize();
 
 
     }
-//
-//    public void addReview(Review review) throws SQLException {
-//
-//        databaseDriver.addReview(review);
-//        databaseDriver.commit();
-//        databaseDriver.disconnect();
-//        //initialize();
-//    }
 
 
     }

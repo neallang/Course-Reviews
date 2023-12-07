@@ -352,6 +352,27 @@ public class DatabaseDriver {
         }
     }
 
+    public void updateReview(String comment, int rating, int userID, int courseID) throws SQLException {
+        try {
+            PreparedStatement statement = connection.prepareStatement("UPDATE Reviews SET ReviewText = " + "\'" + comment + "\'" + ", Rating = " + rating + " WHERE UserID = " + userID + " AND CourseID = " + courseID);
+            statement.execute();
+            updateAverageCourseRating(courseID);
+
+        } catch (SQLException e){
+            rollback();
+            throw e;
+        }
+    }
+
+    public String getComment(int userID, int courseID) throws SQLException{
+        if (connection.isClosed()){
+            throw new IllegalStateException("Connection is not open");
+        }
+        PreparedStatement statement = connection.prepareStatement("SELECT ReviewText FROM Reviews WHERE UserID = " + userID + " AND CourseID = " + courseID);
+        ResultSet resultSet = statement.executeQuery();
+        return resultSet.getString(1);
+    }
+
     public boolean userReviewExists(String username, int courseID) throws SQLException{
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
