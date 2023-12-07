@@ -190,7 +190,7 @@ public class SearchController {
             courseExistsLabel.setText("Course already exists.");
         } else if(inputDept.isEmpty() || inputNum.isEmpty() || inputTitle.isEmpty()) {
             courseExistsLabel.setText("Please complete all fields for course name.");
-        }else if(inputDept.length() > 4 || inputDept.length() < 2){
+        }else if(inputDept.length() > 4 || inputDept.length() < 2 || !inputDept.matches("[a-zA-Z]+")){
             courseExistsLabel.setText("Please input valid department mnemonic.");
         }else if(inputNum.length() != 4 || !isDigits(inputNum)) {
             courseExistsLabel.setText("Please input valid course number.");
