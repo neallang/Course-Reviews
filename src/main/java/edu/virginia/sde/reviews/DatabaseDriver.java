@@ -275,7 +275,6 @@ public class DatabaseDriver {
 
     public ArrayList<Course> getCoursesBySearch(String department, String courseNumber, String title) throws SQLException{
 
-        //Got the code for how to get stops from the OCT 26 Lecture example code (Database.java)
         if (connection.isClosed()){
             throw new IllegalStateException("Connection is not open");
         }
