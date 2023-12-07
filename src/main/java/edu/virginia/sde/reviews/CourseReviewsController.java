@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 
 public class CourseReviewsController {
@@ -31,12 +32,23 @@ public class CourseReviewsController {
     private RadioButton button_one, button_two, button_three, button_four, button_five;
     private Timestamp timestamp;
     private int courseID;
+
+    private int userID;
+    private boolean userReviewAlreadyExists;
     UsernameSingleton currentUsername = UsernameSingleton.getInstance();
     int rating = -1;
     String comment;
     CurrentReviewSingleton currentReviewSingleton = CurrentReviewSingleton.getInstance();
     @FXML TextField comment_text_box;
     @FXML Label null_rating_label;
+
+    @FXML private TableView<Review> tableView;
+    @FXML private TableColumn<Review, Integer> ratingColumn;    //rating
+    @FXML private TableColumn<Review, String> commentColumn;      //reviewText
+    @FXML private TableColumn<Review, Timestamp> dateTimeColumn;     //timeStamp
+    @FXML private Label average_review_double;
+    @FXML private Label messageLabel;
+    DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
 
 
 
@@ -56,10 +68,6 @@ public class CourseReviewsController {
         else if (button_five.isSelected()){
             rating = 5;
         }
-    }
-
-    public void setComment(){
-        this.comment = comment_text_box.getText();
     }
 
     @FXML
@@ -90,27 +98,17 @@ public class CourseReviewsController {
         stage.show();
     }
 
-
-
-
-    @FXML private TableView<Review> tableView;
-    @FXML private TableColumn<Review, Integer> ratingColumn;    //rating
-    @FXML private TableColumn<Review, String> commentColumn;      //reviewText
-    @FXML private TableColumn<Review, Timestamp> dateTimeColumn;     //timeStamp
-    @FXML private Label average_review_double;
-    DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
-
     public void initialize() throws IOException, SQLException {
         CourseIDSingleton courseIDSingleton = CourseIDSingleton.getInstance();
         courseID = courseIDSingleton.getCourseID();
         databaseDriver.connect();
         ArrayList<Review> reviewArrayList= databaseDriver.getCourseReviews(courseID);
         double average = databaseDriver.getAverageCourseRating(courseID);
-
-//        if (stanFuncTrue){
-//            load review
-//        }
-
+        userID = databaseDriver.getUserID(currentUsername.getUsername());
+        userReviewAlreadyExists = databaseDriver.userReviewExists(currentUsername.getUsername(), courseID);
+        if(userReviewAlreadyExists){
+            comment_text_box.setText(databaseDriver.getComment(userID, courseID));
+        }
         databaseDriver.disconnect();
 
         ObservableList<Review> observableReviewList = FXCollections.observableArrayList(reviewArrayList);
@@ -128,33 +126,28 @@ public class CourseReviewsController {
     }
 
 
-//    public void save(javafx.event.ActionEvent actionEvent) throws SQLException {
-//        databaseDriver.connect();
-//        boolean userReviewAlreadyExists = databaseDriver.userAlreadyExists(currentUsername.getUsername());
-//
-//
-//        int userID = databaseDriver.getUserID(currentUsername.getUsername());
-//
-//
-//
-//        setComment();
-//        CurrentReviewSingleton.getInstance().setComment(this.comment);
-//        CurrentReviewSingleton.getInstance().setRating(rating);
-//        timestamp = new Timestamp(java.lang.System.currentTimeMillis());
-//
-//        Review review = new Review(userID, courseID, currentReviewSingleton.getComment(), currentReviewSingleton.getRating(), timestamp);
-//
-//        addReview(review);
-//
-//    }
-//
-//    public void addReview(Review review) throws SQLException {
-//
-//        databaseDriver.addReview(review);
-//        databaseDriver.commit();
-//        databaseDriver.disconnect();
-//        //initialize();
-//    }
+
+    public void save(javafx.event.ActionEvent actionEvent) throws SQLException, IOException, InterruptedException {
+
+        String comment = comment_text_box.getText();
+        timestamp = new Timestamp(java.lang.System.currentTimeMillis());
+        databaseDriver.connect();
+        if(userReviewAlreadyExists){
+            databaseDriver.updateReview(comment, rating, userID, courseID);
+            databaseDriver.commit();
+            databaseDriver.disconnect();
+        } else {
+            Review review = new Review(userID, courseID, comment, rating, timestamp);
+            databaseDriver.addReview(review);
+            databaseDriver.commit();
+            databaseDriver.disconnect();
+        }
+
+
+        initialize();
+
+
+    }
 
 
     }

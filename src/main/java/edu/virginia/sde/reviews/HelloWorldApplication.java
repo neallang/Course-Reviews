@@ -23,9 +23,6 @@ public class HelloWorldApplication extends Application {
         stage.show();
         DatabaseDriver databaseDriver = new DatabaseDriver("appDatabase.sqlite");
         databaseDriver.connect();
-        databaseDriver.dropReviewsTable();
-        databaseDriver.dropCoursesTable();
-        databaseDriver.dropUsersTable();
         databaseDriver.createTables();
         if(databaseDriver.checkEmpty()){
             addData(databaseDriver);

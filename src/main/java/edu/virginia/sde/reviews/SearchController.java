@@ -69,6 +69,8 @@ public class SearchController {
     private Button searchButton;
     @FXML
     private Button addButton;
+    @FXML
+    private Label courseExistsLabel;
 
     private User activeUser;
     public void setActiveUser(User user){
@@ -135,6 +137,7 @@ public class SearchController {
                     try {
                         databaseDriver.connect();
                         setCourseID(databaseDriver.getCourseID(rowData.getTitle()));
+                        databaseDriver.disconnect();
                         currentCourseID.setCourseID(courseID);
                         root = FXMLLoader.load(new File("src/main/resources/edu/virginia/sde/reviews/course-reviews-final.fxml").toURI().toURL());
                         // Switch to the new scene
@@ -179,8 +182,15 @@ public class SearchController {
         String inputTitle = courseTitleAdd.getText();
         Course newCourse = new Course(inputDept, inputNum, inputTitle);
         databaseDriver.connect();
-        databaseDriver.addCourse(newCourse);
-        databaseDriver.commit();
+        if(databaseDriver.courseAlreadyExists(inputDept, inputTitle)){
+            courseExistsLabel.setText("Course already exists.");
+        } else {
+            databaseDriver.addCourse(newCourse);
+            databaseDriver.commit();
+            courseExistsLabel.setText("");
+        }
+
+
         databaseDriver.disconnect();
         initialize();
     }
