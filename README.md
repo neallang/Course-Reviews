@@ -1,4 +1,4 @@
-# Homework 6 - Course Reviews Application
+# Course Reviews Application
 
 ## Authors
 1) Neal Langhorne, yhn5yh, [neallang]
